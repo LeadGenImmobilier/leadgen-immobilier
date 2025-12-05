@@ -1,62 +1,58 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Feedback - LeadGen Immobilier</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LeadGen Immobilier - Feedback</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
 </head>
 <body>
-
 <header>
-  <div class="nav">
-    <div class="brand">
-      <div class="logo">LG</div>
-      <div>
-        <div class="brand-name">LeadGen Immobilier</div>
-        <div class="brand-tagline">Real Estate Lead Specialists</div>
-      </div>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Properties</a>
-      <a href="team.html">Team</a>
-      <a href="contact.html">Contact</a>
-      <a href="feedback.html">Feedback</a>
-    </nav>
-    <button class="btn" id="loginBtn">Admin</button>
-  </div>
+<div class="nav">
+<div class="brand"><div class="logo">LG</div>
+<div>
+<div class="brand-name">LeadGen Immobilier</div>
+<div class="brand-tagline">Real estate lead generation & property marketing</div>
+</div></div>
+<div class="topbar-controls">
+<nav>
+<a href="index.html">Home</a>
+<a href="properties.html">Properties</a>
+<a href="team.html">Team</a>
+<a href="contact.html">Contact</a>
+<a href="feedback.html">Feedback</a>
+</nav>
+<button class="btn" id="loginBtn">Admin</button>
+</div></div>
 </header>
 
+<main>
 <section>
-  <h2>Your Feedback Matters</h2>
-  <p class="muted">Help us improve our service.</p>
-
-  <div class="card" style="max-width:500px;margin:auto;margin-top:25px;">
-    <form id="feedbackForm">
-      <label>Full Name</label>
-      <input class="input" required>
-
-      <label>Rating (1–5)</label>
-      <input type="number" min="1" max="5" class="input" required>
-
-      <label>Your Feedback</label>
-      <textarea class="input" required></textarea>
-
-      <button class="btn" style="margin-top:10px;width:100%">Submit</button>
-    </form>
-  </div>
+<h2 style="color:var(--primary)">Feedback</h2>
+<p class="muted">Tell us how we did</p>
+<div class="card" style="margin-top:12px">
+<form id="feedbackForm">
+<label for="fbname">Your name</label>
+<input id="fbname" type="text" placeholder="Name">
+<label for="fbmsg">Message</label>
+<textarea id="fbmsg" rows="4" placeholder="Your feedback"></textarea>
+<div style="margin-top:10px"><button class="btn">Send Feedback</button></div>
+</form>
+</div>
 </section>
+</main>
 
 <footer>
-  <div class="footer-grid">
-    <div><div class="brand-name">LeadGen Immobilier</div></div>
-    <div class="footer-links">
-      <a>Facebook</a><a>Instagram</a><a>WhatsApp</a>
-    </div>
-  </div>
+<div class="footer-grid">
+<div><div class="brand-name">LeadGen Immobilier</div><div class="muted">Quality leads — premium properties</div></div>
+<div class="footer-links">
+<a href="#">Facebook</a>
+<a href="#">Instagram</a>
+<a href="#">WhatsApp</a>
+<a href="tel:+212600000000">Call</a>
+</div>
+</div>
 </footer>
-
-<script src="script.js"></script>
 </body>
 </html>
