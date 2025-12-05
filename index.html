@@ -1,74 +1,38 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LeadGen Immobilier - Home</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js" defer></script>
-  <script src="script.js" defer></script>
+    <title>Home - Real Estate Agency</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
-  <header>
-    <div class="nav">
-      <div class="brand">
-        <div class="logo">LG</div>
-        <div>
-          <div class="brand-name">LeadGen Immobilier</div>
-          <div class="brand-tagline">Real estate lead generation & property marketing</div>
-        </div>
-      </div>
-      <div class="topbar-controls">
-        <nav>
-          <a href="index.html">Home</a>
-          <a href="properties.html">Properties</a>
-          <a href="team.html">Team</a>
-          <a href="contact.html">Contact</a>
-          <a href="feedback.html">Feedback</a>
-        </nav>
-        <button class="btn" id="loginBtn">Admin</button>
-      </div>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="content">
-      <h1>We connect buyers with their dream properties — faster.</h1>
-      <p>LeadGen Immobilier provides targeted leads, listing promotion and conversion funnels for apartments, villas, and high-end properties. We generate quality vetted leads so you focus on closing.</p>
-      <div class="hero-buttons">
-        <a class="btn" href="properties.html">See Properties</a>
-        <a class="btn btn-outline" href="contact.html">Get a Quote</a>
-      </div>
-    </div>
-  </section>
+<header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="properties.html">Properties</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+        <a href="feedback.html">Feedback</a>
+        <button id="adminBtn">Admin</button>
+    </nav>
+</header>
 
-  <footer>
-    <div class="footer-grid">
-      <div>
-        <div class="brand-name">LeadGen Immobilier</div>
-        <div class="muted">Quality leads — premium properties</div>
-      </div>
-      <div class="footer-links">
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">WhatsApp</a>
-        <a href="tel:+212600000000">Call</a>
-      </div>
-    </div>
-  </footer>
+<h1 style="text-align:center; margin-top:40px;">Welcome to Our Real Estate Agency</h1>
 
-  <div class="admin-panel" id="adminPanel" style="display:none">
-    <div class="admin-title">Admin</div>
-    <div class="muted">Manage listings</div>
-    <div class="admin-buttons">
-      <button class="btn">Add Property</button>
-      <button class="btn">Manage</button>
-    </div>
-  </div>
 
-  <div class="modal-backdrop" id="modalWrap">
-    <div class="modal" id="modalContent"></div>
-  </div>
+<!-- ADMIN LOGIN POPUP -->
+<div id="adminPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="closePopup">&times;</span>
+        <h3>Admin Login</h3>
+
+        <input id="adminEmail" type="email" placeholder="Email">
+        <input id="adminPassword" type="password" placeholder="Password">
+        <button onclick="adminLogin()">Login</button>
+    </div>
+</div>
 
 </body>
 </html>
