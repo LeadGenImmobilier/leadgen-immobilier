@@ -1,79 +1,117 @@
-// --- SUPABASE SETUP ---
+// INIT SUPABASE
 const SUPABASE_URL = "https://drkjmtanzqmjgpltjqcg.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N";
+const SUPABASE_KEY = "sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// --- SELECTORS (same on all pages) ---
-const loginBtn = document.getElementById("loginBtn");
-const adminPanel = document.getElementById("adminPanel");
-const modalWrap = document.getElementById("modalWrap");
-const modalContent = document.getElementById("modalContent");
+// SHOW ADMIN POPUP
+document.getElementById("adminBtn").onclick = () => {
+    document.getElementById("adminPopup").style.display = "flex";
+};
 
-// --- SHOW LOGIN MODAL ---
-if (loginBtn) {
-  loginBtn.addEventListener("click", () => {
-    showLoginModal();
-  });
+document.getElementById("closePopup").onclick = () => {
+    document.getElementById("adminPopup").style.display = "none";
+};
+
+
+// ADMIN LOGIN
+async function adminLogin() {
+    const email = document.getElementById("adminEmail").value;
+    const password = document.getElementById("adminPassword").value;
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if (error) {
+        alert("Login failed: " + error.message);
+    } else {
+        alert("Admin logged in!");
+        window.location.href = "admin.html";
+    }
 }
 
-function showLoginModal() {
-  modalContent.innerHTML = `
-    <h3>Admin Login</h3>
-    <input id="adminUser" type="text" placeholder="Username" />
-    <input id="adminPass" type="password" placeholder="Password" />
-    <button id="submitLogin" class="btn">Login</button>
-  `;
-  
-  modalWrap.style.display = "flex";
 
-  document.getElementById("submitLogin").addEventListener("click", loginAdmin);
+// ADD PROPERTY
+async function addProperty() {
+    const title = document.getElementById("p_title").value;
+    const description = document.getElementById("p_description").value;
+    const price = document.getElementById("p_price").value;
+    const value = document.getElementById("p_value").value;
+    const characterestics = document.getElementById("p_characterestics").value;
+    const image_url = document.getElementById("p_image_url").value;
+
+    const { data, error } = await supabaseClient
+        .from("properties")
+        .insert([
+            {
+                title,
+                description,
+                price,
+                value,
+                characterestics,
+                image_url,
+                owner_id: "admin",
+                created_at: new Date()
+            }
+        ]);
+
+    if (error) alert(error.message);
+    else alert("Property added successfully!");
 }
 
-// --- CLOSE MODAL WHEN CLICKING OUTSIDE ---
-modalWrap.addEventListener("click", (e) => {
-  if (e.target === modalWrap) {
-    modalWrap.style.display = "none";
-  }
-});
 
-// --- ADMIN LOGIN LOGIC ---
-async function loginAdmin() {
-  const user = document.getElementById("adminUser").value.trim();
-  const pass = document.getElementById("adminPass").value.trim();
+// FETCH PROPERTIES
+async function loadProperties() {
+    const list = document.getElementById("propertiesList");
+    if (!list) return;
 
-  if (!user || !pass) {
-    alert("Enter username and password");
-    return;
-  }
+    const { data, error } = await supabaseClient
+        .from("properties")
+        .select("*");
 
-  // Username and password are stored in Supabase table "admins"
-  const { data, error } = await supabase
-    .from("admins")
-    .select("*")
-    .eq("username", user)
-    .eq("password", pass)
-    .single();
+    if (error) {
+        console.log("Fetch error:", error);
+        return;
+    }
 
-  if (error || !data) {
-    alert("Incorrect login");
-    return;
-  }
+    list.innerHTML = "";
 
-  // Save admin session in browser
-  localStorage.setItem("admin", "logged_in");
-
-  modalWrap.style.display = "none";
-  showAdminPanel();
+    data.forEach(p => {
+        list.innerHTML += `
+            <div class="property-card">
+                <img src="${p.image_url}">
+                <h3>${p.title}</h3>
+                <p>${p.description}</p>
+                <p><b>Price:</b> ${p.price}</p>
+                <p><b>Size:</b> ${p.value}</p>
+                <p><b>Details:</b> ${p.characterestics}</p>
+                <button onclick="deleteProperty(${p.id})">Delete</button>
+            </div>
+        `;
+    });
 }
 
-// --- SHOW ADMIN PANEL IF LOGGED IN ---
-function showAdminPanel() {
-  if (localStorage.getItem("admin") === "logged_in") {
-    adminPanel.style.display = "block";
-  }
+
+// DELETE PROPERTY
+async function deleteProperty(id) {
+    const { error } = await supabaseClient
+        .from("properties")
+        .delete()
+        .eq("id", id);
+
+    if (error) alert("Delete failed: " + error.message);
+    else {
+        alert("Deleted!");
+        loadProperties();
+    }
 }
 
-// --- AUTO SHOW ADMIN PANEL ON PAGE LOAD ---
-showAdminPanel();
 
+// ON PAGE LOAD
+window.onload = () => {
+    if (document.getElementById("propertiesList")) {
+        loadProperties();
+    }
+};
