@@ -1,0 +1,21 @@
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="logo">LG</div>
+      <div>
+        <div class="brand-name">LeadGen Immobilier</div>
+        <div class="brand-tagline">Real estate lead generation & property marketing</div>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="properties.html">Properties Available</a>
+        <a href="team.html">Our Team</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="feedback.html">Feedback</a>
+      </nav>
+      <button class="btn" id="loginBtn">Admin</button>
+    </div>
+  </div>
+</header>
