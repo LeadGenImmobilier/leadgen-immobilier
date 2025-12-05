@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="properties.html">Properties</a>
+        <a href="team.html">Team</a>
+        <a href="contact.html">Contact</a>
+        <a href="feedback.html">Feedback</a>
+        <button id="adminBtn">Admin</button>
+    </nav>
+</header>
+
+<div class="admin-container">
+    <h2>Add New Property</h2>
+
+    <input id="p_title" placeholder="Title">
+    <input id="p_description" placeholder="Description">
+    <input id="p_price" placeholder="Price">
+    <input id="p_value" placeholder="Value / m²">
+    <input id="p_characterestics" placeholder="Characteristics">
+    <input id="p_image_url" placeholder="Image URL">
+
+    <button onclick="addProperty()">Add</button>
+
+    <hr><br>
+
+    <h2>All Properties</h2>
+    <div id="propertiesList"></div>
+</div>
+
+</body>
+</html>
