@@ -41,7 +41,7 @@
     .modal-backdrop{position:fixed;inset:0;background:rgba(4,10,30,0.45);display:none;align-items:center;justify-content:center;z-index:40}
     .modal{background:var(--white);padding:18px;border-radius:12px;min-width:320px;max-width:760px}
     label{display:block;margin:8px 0 6px;font-size:13px}
-    input[type=text],input[type=number],input[type=password],textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefb}
+    input[type=text],input[type=number],input[type=password],textarea,input[type=email]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefb}
     .row{display:flex;gap:8px}
     .small{width:120px}
     .danger{background:#ff4d4f;color:white}
@@ -218,7 +218,7 @@
 
     // ----------------- Admin Login -----------------
     loginBtn.addEventListener('click', async ()=>{
-      const session = supabase.auth.getSession();
+      const session = await supabase.auth.getSession();
       if(session.data?.session){
         await supabase.auth.signOut();
         loginBtn.textContent='Admin';
