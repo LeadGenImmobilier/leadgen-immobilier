@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LeadGen Immobilier</title>
+  <style>
+    :root{
+      --primary:#0b5ed7; /* blue */
+      --white:#ffffff;
+      --muted:#f4f6fb;
+      --card-shadow: 0 6px 18px rgba(11,94,215,0.12);
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--muted),#fff);color:var(--primary);}
+    header{background:var(--white);border-bottom:1px solid #e6eefb;padding:18px 24px;position:sticky;top:0;z-index:10}
+    .nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#3aa0ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px}
+    nav a{margin:0 8px;color:var(--primary);text-decoration:none;font-weight:600}
+    .hero{max-width:1100px;margin:28px auto;padding:28px;background:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=60') center/cover no-repeat;border-radius:12px;color:var(--white);display:flex;align-items:center;min-height:320px}
+    .hero .content{backdrop-filter:blur(4px);background:rgba(0,0,0,0.25);padding:22px;border-radius:10px}
+    .hero h1{font-size:32px;margin:0 0 8px}
+    .hero p{margin:0 0 12px;opacity:0.95}
+    .btn{background:var(--white);color:var(--primary);padding:10px 14px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
+    section{max-width:1100px;margin:28px auto;padding:0 16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+    .card{background:var(--white);border-radius:12px;padding:12px;box-shadow:var(--card-shadow);}
+    .card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .meta .name{font-weight:700}
+    .meta .price{color:var(--primary);font-weight:800}
+    footer{background:#072b5b;color:var(--white);padding:20px;margin-top:28px}
+    footer a{color:var(--white);text-decoration:none}
+    /* admin panel */
+    .admin-panel{position:fixed;right:18px;bottom:18px;background:var(--primary);color:var(--white);padding:12px;border-radius:12px;box-shadow:0 8px 20px rgba(11,94,215,0.18);z-index:30}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(4,10,30,0.45);display:none;align-items:center;justify-content:center;z-index:40}
+    .modal{background:var(--white);padding:18px;border-radius:12px;min-width:320px;max-width:760px}
+    label{display:block;margin:8px 0 6px;font-size:13px}
+    input[type=text],input[type=number],textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eefb}
+    .row{display:flex;gap:8px}
+    .small{width:120px}
+    .danger{background:#ff4d4f;color:white}
+    .muted{color:#475569;font-size:13px}
+    .topbar-controls{display:flex;gap:8px;align-items:center}
+    @media (max-width:700px){.hero{min-height:220px}.hero h1{font-size:22px}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">LG</div>
+        <div>
+          <div style="font-weight:800;color:var(--primary)">LeadGen Immobilier</div>
+          <div class="muted" style="font-size:13px">Real estate lead generation & property marketing</div>
+        </div>
+      </div>
+      <div class="topbar-controls">
+        <nav>
+          <a href="#home">Home Page</a>
+          <a href="#properties">Properties Available</a>
+          <a href="#team">Our Team</a>
+          <a href="#contact">Contact Us</a>
+          <a href="#feedback">Feedback</a>
+        </nav>
+        <button class="btn" id="loginBtn">Admin</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="content">
+        <h1>We connect buyers with their dream properties — faster.</h1>
+        <p>LeadGen Immobilier provides targeted leads, listing promotion and conversion funnels for apartments, villas, and high-end properties. We generate quality vetted leads so you focus on closing.</p>
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button class="btn" onclick="document.getElementById('properties').scrollIntoView({behavior:'smooth'})">See Properties</button>
+          <button style="background:transparent;border:2px solid var(--white);color:var(--white);padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:700">Get a Quote</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="properties">
+      <h2 style="color:var(--primary)">Properties Available</h2>
+      <p class="muted">Browse our current listings. (If you're the admin, click the Admin button to add or remove properties.)</p>
+      <div id="propsGrid" class="grid" style="margin-top:12px"></div>
+    </section>
+
+    <section id="team">
+      <h2 style="color:var(--primary)">Our Team</h2>
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=900&q=60" alt="team">
+          <div style="margin-top:10px"><div class="name">Anas Azg</div><div class="muted">Founder & Head of Lead Strategy</div></div>
+        </div>
+        <div class="card">
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=900&q=60" alt="team2">
+          <div style="margin-top:10px"><div class="name">Marketing Team</div><div class="muted">Ad creatives, media buying & analytics</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 style="color:var(--primary)">Contact Us</h2>
+      <p class="muted">Reach out to LeadGen Immobilier</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+        <div class="card" style="flex:1;min-width:260px">
+          <h3 style="margin:0 0 8px">Direct</h3>
+          <div class="muted">Phone: <a href="tel:+212600000000">+212 6 00 00 00 00</a></div>
+          <div class="muted">WhatsApp: <a href="https://wa.me/212600000000" target="_blank">Chat on WhatsApp</a></div>
+          <div class="muted">Email: <a href="mailto:contact@leadgen-immobilier.com">contact@leadgen-immobilier.com</a></div>
+        </div>
+        <div class="card" style="flex:1;min-width:260px">
+          <h3 style="margin:0 0 8px">Social</h3>
+          <div class="muted">Facebook: <a href="#" target="_blank">LeadGen Immobilier</a></div>
+          <div class="muted">Instagram: <a href="#" target="_blank">@leadgen.immobilier</a></div>
+          <div class="muted">YouTube: <a href="#" target="_blank">Channel</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback">
+      <h2 style="color:var(--primary)">Feedback</h2>
+      <p class="muted">Tell us how we did</p>
+      <div class="card" style="margin-top:12px">
+        <form id="feedbackForm">
+          <label for="fbname">Your name</label>
+          <input id="fbname" type="text" placeholder="Name">
+          <label for="fbmsg">Message</label>
+          <textarea id="fbmsg" rows="4" placeholder="Your feedback"></textarea>
+          <div style="margin-top:10px"><button class="btn">Send Feedback</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+      <div>
+        <div style="font-weight:800">LeadGen Immobilier</div>
+        <div class="muted">Quality leads — premium properties</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">WhatsApp</a>
+        <a href="tel:+212600000000">Call</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Admin floating button -->
+  <div class="admin-panel" id="adminPanel">
+    <div style="font-weight:800">Admin</div>
+    <div style="font-size:13px;opacity:0.95">Manage listings</div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn" id="openAdd">Add Property</button>
+      <button class="btn" id="openManage">Manage</button>
+    </div>
+  </div>
+
+  <!-- Modal backdrop -->
+  <div class="modal-backdrop" id="modalWrap">
+    <div class="modal" id="modalContent">
+      <!-- dynamic content -->
+    </div>
+  </div>
+
+  <script>
+    // ----------------- Data storage -----------------
+    const STORAGE_KEYS = {PROPS:'lg_props', ADMIN:'lg_admin'};
+
+    // ensure admin panel hidden until logged in
+    const adminPanel = document.getElementById('adminPanel');
+    const loginBtn = document.getElementById('loginBtn');
+    const modalWrap = document.getElementById('modalWrap');
+    const modalContent = document.getElementById('modalContent');
+
+    function getProps(){
+      try{return JSON.parse(localStorage.getItem(STORAGE_KEYS.PROPS) || '[]');}catch(e){return []}
+    }
+    function saveProps(list){localStorage.setItem(STORAGE_KEYS.PROPS,JSON.stringify(list))}
+
+    // admin credential stored locally (ONLY local demo: for production use a real backend)
+    function getAdmin(){
+      try{return JSON.parse(localStorage.getItem(STORAGE_KEYS.ADMIN) || 'null');}catch(e){return null}
+    }
+    function saveAdmin(obj){localStorage.setItem(STORAGE_KEYS.ADMIN,JSON.stringify(obj))}
+
+    // ----------------- Render properties -----------------
+    function renderProperties(){
+      const grid = document.getElementById('propsGrid');grid.innerHTML='';
+      const list = getProps();
+      if(!list.length) grid.innerHTML='<div class="muted">No properties added yet (admin: click Admin & add)</div>';
+      list.forEach((p,idx)=>{
+        const el = document.createElement('div');el.className='card';
+        el.innerHTML = `
+          <img src="${sanitize(p.image||'https://images.unsplash.com/photo-1560185127-6c1b9e2f0c44?auto=format&fit=crop&w=900&q=60')}" alt="${escapeHtml(p.name)}">
+          <div style="margin-top:10px">
+            <div class="meta"><div class="name">${escapeHtml(p.name)}</div><div class="price">${formatPrice(p.price)}</div></div>
+            <div class="muted" style="margin-top:6px">${escapeHtml(p.characteristics||'—')}</div>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+              <div class="muted">Actual value: <strong>${formatPrice(p.actualValue)}</strong></div>
+              <button class="btn" onclick="openDetails(${idx})">View</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(el);
+      })
+    }
+
+    function openDetails(idx){
+      const p=getProps()[idx];
+      showModal(`
+        <h3 style=\"margin-top:0\">${escapeHtml(p.name)}</h3>
+        <img src=\"${sanitize(p.image)}\" style=\"width:100%;height:240px;object-fit:cover;border-radius:8px\">
+        <p class=\"muted\">${escapeHtml(p.characteristics)}</p>
+        <p><strong>Price:</strong> ${formatPrice(p.price)} &nbsp; <strong>Actual value:</strong> ${formatPrice(p.actualValue)}</p>
+        <div style=\"text-align:right;margin-top:10px\"><button class=\"btn\" onclick=\"closeModal()\">Close</button> ${isLoggedIn()?`<button class=\"btn danger\" onclick=\"deleteProp(${idx})\">Delete</button>`:''}</div>
+      `)
+    }
+
+    // ----------------- Utilities -----------------
+    function escapeHtml(str=''){return String(str).replace(/[&<>"]/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[s])}
+    function sanitize(url){ if(!url) return '';
+      return url.split(' ').join('%20');
+    }
+    function formatPrice(v){ if(!v && v!==0) return '—'; return typeof v==='number'?v.toLocaleString('en-US',{style:'currency',currency:'USD'}):v }
+
+    // ----------------- Modal -----------------
+    function showModal(html){ modalContent.innerHTML = html; modalWrap.style.display='flex'; }
+    function closeModal(){ modalWrap.style.display='none'; modalContent.innerHTML=''; }
+    modalWrap.addEventListener('click', (e)=>{ if(e.target===modalWrap) closeModal(); })
+
+    // ----------------- Admin auth -----------------
+    loginBtn.addEventListener('click', ()=>{
+      const admin = getAdmin();
+      if(!admin){
+        showModal(`
+          <h3>Setup admin account</h3>
+          <label>Password (choose strong)</label>
+          <input id=\"initPwd\" type=\"text\" placeholder=\"admin password\">
+          <div style=\"margin-top:10px;text-align:right\"><button class=\"btn\" onclick=\"createAdmin()\">Create</button></div>
+        `)
+      } else {
+        showModal(`
+          <h3>Admin login</h3>
+          <label>Password</label>
+          <input id=\"loginPwd\" type=\"password\" placeholder=\"password\">
+          <div style=\"margin-top:10px;text-align:right\"><button class=\"btn\" onclick=\"doLogin()\">Login</button></div>
+        `)
+      }
+    })
+
+    window.createAdmin = ()=>{
+      const pwd = document.getElementById('initPwd').value.trim();
+      if(!pwd){alert('Please enter a password');return}
+      saveAdmin({password:pwd});
+      alert('Admin created — keep your password safe (stored locally).');
+      closeModal();
+      loginStateChanged(true);
+    }
+    window.doLogin = ()=>{
+      const pwd = document.getElementById('loginPwd').value;
+      const admin = getAdmin();
+      if(admin && pwd===admin.password){ closeModal(); loginStateChanged(true);} else {alert('Wrong password')}
+    }
+
+    function isLoggedIn(){return sessionStorage.getItem('lg_logged')==='1'}
+    function loginStateChanged(logged){
+      if(logged){ sessionStorage.setItem('lg_logged','1'); adminPanel.style.display='block'; loginBtn.textContent='Logout'; loginBtn.onclick = ()=>{ sessionStorage.removeItem('lg_logged'); loginBtn.textContent='Admin'; adminPanel.style.display='none'; }
+      } else { adminPanel.style.display='none'; }
+    }
+
+    // auto-check session
+    if(isLoggedIn()) loginStateChanged(true); else adminPanel.style.display='none';
+
+    // ----------------- Admin actions -----------------
+    document.getElementById('openAdd').addEventListener('click', ()=>{
+      if(!isLoggedIn()){ alert('Please login as admin first'); return }
+      showModal(`
+        <h3>Add Property</h3>
+        <label>Name</label><input id=\"propName\" type=\"text\" placeholder=\"e.g. 3BR Apartment Casablanca\">
+        <label>Image URL (public)</label><input id=\"propImage\" type=\"text\" placeholder=\"https://...\">
+        <label>Characteristics (comma-separated)</label><input id=\"propChars\" type=\"text\" placeholder=\"3 beds, 2 baths, near metro\">
+        <div class=\"row\"><div class=\"small\"><label>Price (USD)</label><input id=\"propPrice\" type=\"number\"></div><div class=\"small\"><label>Actual value</label><input id=\"propActual\" type=\"number\"></div></div>
+        <div style=\"text-align:right;margin-top:10px\"><button class=\"btn\" onclick=\"addProperty()\">Add</button> <button class=\"btn danger\" onclick=\"closeModal()\">Cancel</button></div>
+      `)
+    })
+
+    window.addProperty = ()=>{
+      const name = document.getElementById('propName').value.trim();
+      const image = document.getElementById('propImage').value.trim();
+      const characteristics = document.getElementById('propChars').value.trim();
+      const price = Number(document.getElementById('propPrice').value || 0);
+      const actualValue = Number(document.getElementById('propActual').value || 0);
+      if(!name){alert('Name required');return}
+      const list = getProps();
+      list.unshift({name,image,characteristics,price,actualValue,created:Date.now()});
+      saveProps(list); closeModal(); renderProperties();
+    }
+
+    document.getElementById('openManage').addEventListener('click', ()=>{
+      if(!isLoggedIn()){ alert('Please login as admin first'); return }
+      const list = getProps();
+      let html = '<h3>Manage Properties</h3>';
+      if(!list.length) html += '<div class="muted">No properties</div>';
+      html += '<div style="max-height:360px;overflow:auto;margin-top:10px">';
+      list.forEach((p,idx)=>{
+        html += `<div style=\"display:flex;gap:8px;align-items:center;margin-bottom:8px\"><img src=\"${sanitize(p.image)}\" style=\"width:72px;height:56px;object-fit:cover;border-radius:8px\"><div style=\"flex:1\"><div style=\"font-weight:700\">${escapeHtml(p.name)}</div><div class=\"muted\">${escapeHtml(p.characteristics)}</div></div><div><button class=\"btn danger\" onclick=\"deleteProp(${idx})\">Delete</button></div></div>`
+      })
+      html += '</div><div style="text-align:right;margin-top:10px"><button class="btn" onclick="closeModal()">Close</button></div>';
+      showModal(html);
+    })
+
+    window.deleteProp = (idx)=>{
+      if(!isLoggedIn()){ alert('Please login as admin first'); return }
+      if(!confirm('Delete this property?')) return;
+      const list = getProps(); list.splice(idx,1); saveProps(list); closeModal(); renderProperties();
+    }
+
+    // ----------------- feedback handling -----------------
+    document.getElementById('feedbackForm').addEventListener('submit', (e)=>{e.preventDefault();alert('Thanks for your feedback!');document.getElementById('fbname').value='';document.getElementById('fbmsg').value='';})
+
+    // ----------------- small helpers for demo -----------------
+    // Preload example data if empty (for first time)
+    (function seed(){ if(!getProps().length){
+      const sample = [
+        {name:'Sunny 2BR Apartment',image:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=60',characteristics:'2 beds, 1 bath, 85m², city center',price:120000,actualValue:115000},
+        {name:'Modern Villa with Pool',image:'https://images.unsplash.com/photo-1600607684005-6f1a8bd79f98?auto=format&fit=crop&w=900&q=60',characteristics:'5 beds, 4 baths, 420m², private pool',price:550000,actualValue:530000},
+        {name:'Cozy Mansion',image:'https://images.unsplash.com/photo-1505691723518-36a1fb0f3e5d?auto=format&fit=crop&w=900&q=60',characteristics:'8 beds, 6 baths, landscaped garden',price:1200000,actualValue:1185000}
+      ]; saveProps(sample); }
+      renderProperties();
+    })();
+
+    // small helper for logout button text
+    (function(){ if(isLoggedIn()){ loginBtn.textContent='Logout'; loginBtn.onclick=()=>{ sessionStorage.removeItem('lg_logged'); loginBtn.textContent='Admin'; adminPanel.style.display='none'; } } })();
+
+  </script>
+</body>
+</html>
