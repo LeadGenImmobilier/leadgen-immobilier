@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LeadGen Immobilier - Contact</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">LG</div>
+        <div>
+          <div class="brand-name">LeadGen Immobilier</div>
+          <div class="brand-tagline">Real estate lead generation & property marketing</div>
+        </div>
+      </div>
+      <div class="topbar-controls">
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="properties.html">Properties</a>
+          <a href="team.html">Team</a>
+          <a href="contact.html">Contact</a>
+          <a href="feedback.html">Feedback</a>
+        </nav>
+        <button class="btn" id="loginBtn">Admin</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p class="muted">Reach out to LeadGen Immobilier</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
+      <div class="card" style="flex:1;min-width:260px">
+        <h3>Direct</h3>
+        <div class="muted">Phone: <a href="tel:+212600000000">+212 6 00 00 00 00</a></div>
+        <div class="muted">WhatsApp: <a href="https://wa.me/212600000000" target="_blank">Chat on WhatsApp</a></div>
+        <div class="muted">Email: <a href="mailto:contact@leadgen-immobilier.com">contact@leadgen-immobilier.com</a></div>
+      </div>
+      <div class="card" style="flex:1;min-width:260px">
+        <h3>Social</h3>
+        <div class="muted">Facebook: <a href="#" target="_blank">LeadGen Immobilier</a></div>
+        <div class="muted">Instagram: <a href="#" target="_blank">@leadgen.immobilier</a></div>
+        <div class="muted">YouTube: <a href="#" target="_blank">Channel</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="brand-name">LeadGen Immobilier</div>
+        <div class="muted">Quality leads — premium properties</div>
+      </div>
+      <div class="footer-links">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">WhatsApp</a>
+        <a href="tel:+212600000000">Call</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="admin-panel" id="adminPanel" style="display:none">
+    <div class="admin-title">Admin</div>
+    <div class="muted">Manage listings</div>
+    <div class="admin-buttons">
+      <button class="btn">Add Property</button>
+      <button class="btn">Manage</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalWrap">
+    <div class="modal" id="modalContent"></div>
+  </div>
+
+</body>
+</html>
