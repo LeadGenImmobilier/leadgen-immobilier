@@ -1,4 +1,85 @@
 <!doctype html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
+<script>
+  const SUPABASE_URL = 'sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N';
+  const SUPABASE_ANON_KEY = 'sb_secret_1DLFRaoWrjz_IRNU1zKUWA_cwhJnEbX';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+</script>
+
+<div id="loginSection">
+  <input type="email" id="adminEmail" placeholder="Email">
+  <input type="password" id="adminPassword" placeholder="Password">
+  <button onclick="adminLogin()">Login</button>
+</div>
+
+<script>
+async function adminLogin() {
+  const email = document.getElementById('adminEmail').value;
+  const password = document.getElementById('adminPassword').value;
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) return alert('Login failed: ' + error.message);
+  alert('Logged in!');
+  document.getElementById('loginSection').style.display = 'none';
+  loadProperties(); 
+}
+</script>
+
+async function loadProperties() {
+  const { data: properties, error } = await supabase
+    .from('properties')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) return console.error(error);
+
+  const container = document.getElementById('propertiesContainer');
+  container.innerHTML = '';
+
+  properties.forEach(p => {
+    container.innerHTML += `
+      <div class="property-card">
+        <img src="${p.image_url}" alt="${p.title}">
+        <h3>${p.title}</h3>
+        <p>${p.characteristics}</p>
+        <p>Price: $${p.price}</p>
+        <p>Value: $${p.value}</p>
+        ${supabase.auth.getSession().data?.session?.user?.id === p.owner_id ? 
+          `<button onclick="deleteProperty('${p.id}')">Delete</button>` : ''}
+      </div>
+    `;
+  });
+}
+async function addProperty() {
+  const title = document.getElementById('propName').value;
+  const description = document.getElementById('propDesc').value;
+  const characteristics = document.getElementById('propChars').value;
+  const price = Number(document.getElementById('propPrice').value);
+  const value = Number(document.getElementById('propActual').value);
+  const image_url = document.getElementById('propImage').value;
+
+  const { data, error } = await supabase.from('properties').insert([{
+    title, description, characteristics, price, value, image_url, owner_id: supabase.auth.getSession().data.session.user.id
+  }]);
+
+  if (error) return alert('Error: ' + error.message);
+  alert('Property added!');
+  loadProperties();
+}
+async function deleteProperty(id) {
+  if (!confirm('Delete this property?')) return;
+
+  const { error } = await supabase.from('properties').delete().eq('id', id);
+  if (error) return alert('Error: ' + error.message);
+  loadProperties();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  loadProperties();
+});
+
+
+
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
