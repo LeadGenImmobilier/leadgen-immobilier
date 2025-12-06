@@ -41,7 +41,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("Supabase:", window.supabaseClient); // ✅ debug
+  console.log("Supabase:", window.supabase); // ✅ debug
 
   const { data, error } = await window.supabaseClient
     .from("properties")
