@@ -1,38 +1,26 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Properties - LeadGen Immobilier</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="properties.js"></script>
-</head>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-<body>
-<header>
-  <div class="nav">
-    <div class="brand">
-      <div class="logo">LG</div>
-      <div>
-        <div class="brand-name">LeadGen Immobilier</div>
-        <div class="brand-tagline">Real estate lead generation & property marketing</div>
+  const list = document.getElementById("propertiesList");
+
+  if (error) {
+    list.innerHTML = "Error loading properties";
+    return;
+  }
+
+  list.innerHTML = data.map(p => `
+    <div class="card">
+      <img src="${p.image_url}">
+      <div class="card-info">
+        <h3>${p.title}</h3>
+        <p>${p.description}</p>
+        <p><b>${p.price} MAD</b></p>
       </div>
     </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a class="active" href="properties.html">Properties</a>
-      <a href="team.html">Team</a>
-      <a href="contact.html">Contact</a>
-      <a href="feedback.html">Feedback</a>
-    </nav>
-  </div>
-</header>
-
-<section>
-  <h2>Available Properties</h2>
-  <div class="grid" id="propertiesList"></div>
-</section>
-
-</body>
-</html>
+  `).join("");
+});
+</script>
