@@ -37,7 +37,7 @@
 
   <form id="feedbackForm" class="card" style="max-width:500px;margin:auto;">
     <label>Name</label>
-    <input type="text" id="name" required>
+    <input id="name" required>
 
     <label>Message</label>
     <textarea id="message" required></textarea>
@@ -56,12 +56,7 @@ document.getElementById("feedbackForm").addEventListener("submit", async (e) => 
   const message = document.getElementById("message").value.trim();
   const result = document.getElementById("result");
 
-  if (!name || !message) {
-    result.textContent = "Please fill all fields.";
-    return;
-  }
-
-  const { error } = await supabase
+  const { error } = await window.supabase
     .from("feedback")
     .insert([{ name, message }]);
 
