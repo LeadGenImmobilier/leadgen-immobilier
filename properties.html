@@ -1,64 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Properties</title>
-
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
-
-  <!-- Global client -->
-  <script src="script.js" defer></script>
-</head>
-<body>
-
-<h2>Properties</h2>
-<div id="propsGrid"></div>
-
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
 
   if (!window.supabaseClient) {
-    console.error('❌ Supabase client not available');
+    console.error('❌ Supabase client not initialized');
     return;
   }
 
-  const grid = document.getElementById('propsGrid');
+  const { data, error } = await window.supabaseClient
+    .from('properties')
+    .select('*');
 
-  try {
-    const { data, error } = await window.supabaseClient
-      .from('properties')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) {
-      console.error(error);
-      grid.innerHTML = '<p>Failed to load properties.</p>';
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      grid.innerHTML = '<p>No properties available.</p>';
-      return;
-    }
-
-    grid.innerHTML = data.map(p => `
-      <div style="border:1px solid #ccc;padding:10px;margin:10px">
-        <h3>${p.title}</h3>
-        <p>${p.description || ''}</p>
-        <strong>Price:</strong> ${p.price ?? '—'}
-      </div>
-    `).join('');
-
-    console.log('✅ Properties loaded');
-
-  } catch (err) {
-    console.error(err);
-    grid.innerHTML = '<p>Unexpected error.</p>';
+  if (error) {
+    console.error('❌ Supabase error:', error.message);
+    return;
   }
+
+  console.log('✅ Properties loaded:', data);
 
 });
 </script>
-
-</body>
-</html>
