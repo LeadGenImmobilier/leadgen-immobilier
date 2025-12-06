@@ -1,39 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ Load Supabase FIRST -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- ✅ Load your global client -->
+  <script src="./script.js"></script>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="logo">LG</div>
+      <div>
+        <div class="brand-name">LeadGen Immobilier</div>
+        <div class="brand-tagline">Real Estate Lead Generation</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+      <a class="active" href="feedback.html">Feedback</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <h2>Leave Feedback</h2>
+
+  <form id="feedbackForm" class="card" style="max-width:500px;margin:auto;">
+    <label>Name</label>
+    <input type="text" id="fbname" required>
+
+    <label>Message</label>
+    <textarea id="fbmsg" required></textarea>
+
+    <button class="btn" type="submit">Submit</button>
+  </form>
+</section>
+
 <script>
-document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
 
-  // ✅ safety check
   if (!window.supabaseClient) {
-    console.error('❌ Supabase client not initialized');
-    alert('System error. Please try later.');
+    console.error('❌ Supabase client not ready');
     return;
   }
 
-  const name = document.getElementById('fbname').value.trim();
-  const message = document.getElementById('fbmsg').value.trim();
+  document.getElementById('feedbackForm')
+    .addEventListener('submit', async (e) => {
 
-  if (!name || !message) {
-    alert('Please fill all fields.');
-    return;
-  }
+      e.preventDefault();
 
-  try {
-    const { error } = await window.supabaseClient
-      .from('feedback')
-      .insert([{ name, message }]);
+      const name = document.getElementById('fbname').value.trim();
+      const message = document.getElementById('fbmsg').value.trim();
 
-    if (error) {
-      console.error(error);
-      alert('Could not send feedback.');
-      return;
-    }
-
-    alert('✅ Feedback sent. Thank you!');
-    document.getElementById('feedbackForm').reset();
-
-  } catch (err) {
-    console.error(err);
-    alert('Unexpected error occurred.');
-  }
-});
-</script>
+      if (!name || !message) {
+        alert('Please fill all fields.');
