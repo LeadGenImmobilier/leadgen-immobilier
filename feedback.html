@@ -1,75 +1,39 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Feedback - LeadGen Immobilier</title>
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js" defer></script>
-</head>
-
-<body>
-
-<header>
-  <div class="nav">
-    <div class="brand">
-      <div class="logo">LG</div>
-      <div>
-        <div class="brand-name">LeadGen Immobilier</div>
-        <div class="brand-tagline">Real estate lead generation & property marketing</div>
-      </div>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Properties</a>
-      <a href="team.html">Team</a>
-      <a href="contact.html">Contact</a>
-      <a class="active" href="feedback.html">Feedback</a>
-    </nav>
-  </div>
-</header>
-
-<section>
-  <h2>Leave Feedback</h2>
-
-  <form id="feedbackForm" class="card" style="max-width:500px;margin:auto;">
-    <label>Name</label>
-    <input id="name" required>
-
-    <label>Message</label>
-    <textarea id="message" required></textarea>
-
-    <button class="btn" type="submit">Submit</button>
-  </form>
-
-  <p id="result" style="text-align:center;margin-top:15px;"></p>
-</section>
-
 <script>
-document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
+document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("name").value.trim();
-  const message = document.getElementById("message").value.trim();
-  const result = document.getElementById("result");
-
-  const { error } = await window.supabase
-    .from("feedback")
-    .insert([{ name, message }]);
-
-  if (error) {
-    console.error(error);
-    result.textContent = "Error sending feedback.";
+  // ✅ safety check
+  if (!window.supabaseClient) {
+    console.error('❌ Supabase client not initialized');
+    alert('System error. Please try later.');
     return;
   }
 
-  result.textContent = "Thank you for your feedback!";
-  e.target.reset();
+  const name = document.getElementById('fbname').value.trim();
+  const message = document.getElementById('fbmsg').value.trim();
+
+  if (!name || !message) {
+    alert('Please fill all fields.');
+    return;
+  }
+
+  try {
+    const { error } = await window.supabaseClient
+      .from('feedback')
+      .insert([{ name, message }]);
+
+    if (error) {
+      console.error(error);
+      alert('Could not send feedback.');
+      return;
+    }
+
+    alert('✅ Feedback sent. Thank you!');
+    document.getElementById('feedbackForm').reset();
+
+  } catch (err) {
+    console.error(err);
+    alert('Unexpected error occurred.');
+  }
 });
 </script>
-
-</body>
-</html>
