@@ -1,63 +1,88 @@
-// ----------------- Public Supabase reader (no admin on site) -----------------
+// ----------------- Public Supabase reader (NO ADMIN on site) -----------------
 
-// Replace these with your project's values (already provided)
-const SUPABASE_URL = 'https://drkjmtanzqmjgpltjqcg.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N';
+/*
+  IMPORTANT:
+  - Supabase CDN MUST be loaded BEFORE this file
+  - This script assumes <script src="script.js" defer></script>
+*/
 
+// ✅ Supabase project credentials
+const SUPABASE_URL = "https://drkjmtanzqmjgpltjqcg.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N";
 
-// Create a client (use a different variable name to avoid clobbering the global)
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ✅ Create client safely and globally
+window.supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
-// DOM elements expected in your pages
-const propsGrid = document.getElementById('propsGrid');       // properties grid container
-const teamGrid = document.getElementById('teamGrid');         // team members grid container
-const contactInfoEl = document.getElementById('contactInfo'); // contact info card container
-const adminPanel = document.getElementById('adminPanel');     // will be hidden (no admin on site)
-const modalWrap = document.getElementById('modalWrap');       // optional modal if used on page
-const modalContent = document.getElementById('modalContent'); // optional modal content
+// ----------------- DOM elements (optional per page) -----------------
+const propsGrid = document.getElementById("propsGrid");
+const teamGrid = document.getElementById("teamGrid");
+const contactInfoEl = document.getElementById("contactInfo");
+const adminPanel = document.getElementById("adminPanel");
+const modalWrap = document.getElementById("modalWrap");
+const modalContent = document.getElementById("modalContent");
 
-// Small helpers
-function safeText(s = '') { return String(s ?? '').trim(); }
-function sanitizeUrl(u){ if(!u) return ''; return u.split(' ').join('%20'); }
-function formatCurrency(v){ if(v === null || v === undefined || v === '') return '—'; return Number(v).toLocaleString('en-US', { style:'currency', currency:'USD' }); }
+// ----------------- Small helpers -----------------
+const safeText = (s = "") => String(s ?? "").trim();
+const sanitizeUrl = (u) => u ? u.replace(/ /g, "%20") : "";
+const formatCurrency = (v) =>
+  v === null || v === undefined || v === ""
+    ? "—"
+    : Number(v).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
 
-// Optional modal helpers (used only if you want small previews)
-function showModal(html){
-  if(!modalWrap || !modalContent) return;
+// ----------------- Modal helpers -----------------
+function showModal(html) {
+  if (!modalWrap || !modalContent) return;
   modalContent.innerHTML = html;
-  modalWrap.style.display = 'flex';
+  modalWrap.style.display = "flex";
 }
-function closeModal(){
-  if(!modalWrap || !modalContent) return;
-  modalWrap.style.display = 'none';
-  modalContent.innerHTML = '';
-}
-if(modalWrap) modalWrap.addEventListener('click', (e)=>{ if(e.target === modalWrap) closeModal(); });
 
-// Hide admin panel on public site
-if(adminPanel) adminPanel.style.display = 'none';
+function closeModal() {
+  if (!modalWrap || !modalContent) return;
+  modalWrap.style.display = "none";
+  modalContent.innerHTML = "";
+}
+
+if (modalWrap) {
+  modalWrap.addEventListener("click", (e) => {
+    if (e.target === modalWrap) closeModal();
+  });
+}
+
+// ----------------- Hide admin panel (public site) -----------------
+if (adminPanel) adminPanel.style.display = "none";
 
 // ----------------- Load Properties -----------------
-async function loadProperties(){
-  if(!propsGrid) return;
-  try{
-    const { data: properties, error } = await supabaseClient
-      .from('properties')
-      .select('id, title, description, price, value, characteristics, image_url, created_at')
-      .order('created_at', { ascending: false });
+async function loadProperties() {
+  if (!propsGrid) return;
 
-    if(error){ console.error('loadProperties error:', error); propsGrid.innerHTML = '<div class="muted">Failed to load properties.</div>'; return; }
-    propsGrid.innerHTML = '';
+  try {
+    const { data, error } = await window.supabaseClient
+      .from("properties")
+      .select("id, title, description, price, value, characteristics, image_url, created_at")
+      .order("created_at", { ascending: false });
 
-    if(!properties || properties.length === 0){
-      propsGrid.innerHTML = '<div class="muted">No properties available.</div>';
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      propsGrid.innerHTML = `<div class="muted">No properties available.</div>`;
       return;
     }
 
-    properties.forEach(p=>{
-      const img = sanitizeUrl(p.image_url) || 'https://images.unsplash.com/photo-1560185127-6c1b9e2f0c44?auto=format&fit=crop&w=900&q=60';
-      const card = document.createElement('div');
-      card.className = 'card';
+    propsGrid.innerHTML = "";
+
+    data.forEach((p) => {
+      const img =
+        sanitizeUrl(p.image_url) ||
+        "https://images.unsplash.com/photo-1560185127-6c1b9e2f0c44?auto=format&fit=crop&w=900&q=60";
+
+      const card = document.createElement("div");
+      card.className = "card";
       card.innerHTML = `
         <img src="${img}" alt="${safeText(p.title)}">
         <div style="margin-top:10px">
@@ -66,58 +91,75 @@ async function loadProperties(){
             <div class="price">${formatCurrency(p.price)}</div>
           </div>
           <div class="muted" style="margin-top:6px">${safeText(p.characteristics)}</div>
-          ${p.description ? `<p style="margin-top:8px">${safeText(p.description)}</p>` : ''}
-          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
-            <div class="muted">Value: <strong>${formatCurrency(p.value)}</strong></div>
-            <button class="btn" onclick="showPropertyDetails(${p.id})">View</button>
+          ${p.description ? `<p style="margin-top:8px">${safeText(p.description)}</p>` : ""}
+          <div style="margin-top:8px;text-align:right">
+            <button class="btn" onclick="showPropertyDetails('${p.id}')">View</button>
           </div>
         </div>
       `;
       propsGrid.appendChild(card);
     });
-
-  }catch(err){
-    console.error('Unexpected error loading properties:', err);
-    propsGrid.innerHTML = '<div class="muted">Unexpected error loading properties.</div>';
+  } catch (err) {
+    console.error("loadProperties error:", err);
+    propsGrid.innerHTML = `<div class="muted">Failed to load properties.</div>`;
   }
 }
 
-// small handler to show property details in modal (optional)
-window.showPropertyDetails = async function(propId){
-  try{
-    const { data, error } = await supabaseClient.from('properties').select('*').eq('id', propId).single();
-    if(error) { console.error(error); return; }
-    const p = data;
-    const img = sanitizeUrl(p.image_url) || '';
+// ----------------- Property modal -----------------
+window.showPropertyDetails = async (id) => {
+  try {
+    const { data, error } = await window.supabaseClient
+      .from("properties")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+
+    const img = sanitizeUrl(data.image_url || "");
+
     showModal(`
-      <h3 style="margin-top:0">${safeText(p.title)}</h3>
-      ${img ? `<img src="${img}" style="width:100%;height:240px;object-fit:cover;border-radius:8px">` : ''}
-      <p class="muted">${safeText(p.characteristics)}</p>
-      ${p.description ? `<p>${safeText(p.description)}</p>` : ''}
-      <p><strong>Price:</strong> ${formatCurrency(p.price)} &nbsp; <strong>Value:</strong> ${formatCurrency(p.value)}</p>
-      <div style="text-align:right;margin-top:10px"><button class="btn" onclick="closeModal()">Close</button></div>
+      <h3>${safeText(data.title)}</h3>
+      ${img ? `<img src="${img}" style="width:100%;height:240px;object-fit:cover;border-radius:8px">` : ""}
+      <p class="muted">${safeText(data.characteristics)}</p>
+      <p>${safeText(data.description)}</p>
+      <p><strong>Price:</strong> ${formatCurrency(data.price)}</p>
+      <div style="text-align:right;margin-top:10px">
+        <button class="btn" onclick="closeModal()">Close</button>
+      </div>
     `);
-  }catch(e){
-    console.error('showPropertyDetails', e);
+  } catch (e) {
+    console.error("showPropertyDetails error:", e);
   }
 };
 
 // ----------------- Load Team Members -----------------
-async function loadTeamMembers(){
-  if(!teamGrid) return;
-  try{
-    const { data: members, error } = await supabaseClient.from('team_members').select('id, name, role, image_url');
-    if(error){ console.error('loadTeamMembers error:', error); teamGrid.innerHTML = '<div class="muted">Failed to load team.</div>'; return; }
-    teamGrid.innerHTML = '';
+async function loadTeamMembers() {
+  if (!teamGrid) return;
 
-    if(!members || members.length === 0){ teamGrid.innerHTML = '<div class="muted">No team members listed.</div>'; return; }
+  try {
+    const { data, error } = await window.supabaseClient
+      .from("team_members")
+      .select("name, role, image_url");
 
-    members.forEach(m=>{
-      const img = sanitizeUrl(m.image_url) || 'https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=900&q=60';
-      const card = document.createElement('div');
-      card.className = 'card';
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      teamGrid.innerHTML = `<div class="muted">No team members listed.</div>`;
+      return;
+    }
+
+    teamGrid.innerHTML = "";
+
+    data.forEach((m) => {
+      const img =
+        sanitizeUrl(m.image_url) ||
+        "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=900&q=60";
+
+      const card = document.createElement("div");
+      card.className = "card";
       card.innerHTML = `
-        <img src="${img}" alt="${safeText(m.name)}">
+        <img src="${img}">
         <div style="margin-top:10px">
           <div class="name">${safeText(m.name)}</div>
           <div class="muted">${safeText(m.role)}</div>
@@ -125,91 +167,72 @@ async function loadTeamMembers(){
       `;
       teamGrid.appendChild(card);
     });
-  }catch(err){
-    console.error('Unexpected error loading team members:', err);
-    teamGrid.innerHTML = '<div class="muted">Unexpected error loading team members.</div>';
+  } catch (err) {
+    console.error("loadTeamMembers error:", err);
   }
 }
 
 // ----------------- Load Contact Info -----------------
-// contact_info schema: id uuid, type text, label text, value text
-async function loadContactInfo(){
-  if(!contactInfoEl && !contactInfo) return; // support both id names contactInfo or contact_info
-  const targetEl = contactInfoEl || document.getElementById('contact'); // fallback
-  if(!targetEl) return;
+async function loadContactInfo() {
+  if (!contactInfoEl) return;
 
-  try{
-    const { data, error } = await supabaseClient.from('contact_info').select('id, type, label, value');
-    if(error){ console.error('loadContactInfo error:', error); targetEl.innerHTML = '<div class="muted">Failed to load contact info.</div>'; return; }
-    // data might be multiple rows: we'll map by type
-    const map = {};
-    (data || []).forEach(row=>{
-      map[row.type] = row.value;
-    });
+  try {
+    const { data, error } = await window.supabaseClient
+      .from("contact_info")
+      .select("type, label, value");
 
-    // Common keys: phone, whatsapp, email (adjust according to your rows)
-    const phone = map.phone || map.Phone || map['direct'] || map['phone'] || '';
-    const whatsapp = map.whatsapp || map['WhatsApp'] || '';
-    const email = map.email || map.Email || '';
+    if (error) throw error;
 
-    // Render similar to your previous card layout
-    targetEl.innerHTML = `
-      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">
-        <div class="card" style="flex:1;min-width:260px">
-          <h3 style="margin:0 0 8px">Direct</h3>
-          ${phone ? `<div class="muted">Phone: <a href="tel:${phone}">${phone}</a></div>` : ''}
-          ${whatsapp ? `<div class="muted">WhatsApp: <a href="https://wa.me/${whatsapp}" target="_blank">Chat on WhatsApp</a></div>` : ''}
-          ${email ? `<div class="muted">Email: <a href="mailto:${email}">${email}</a></div>` : ''}
+    contactInfoEl.innerHTML = data
+      .map(
+        (c) => `
+      <div class="card">
+        <div class="card-info">
+          <h3>${safeText(c.label)}</h3>
+          <p>${safeText(c.value)}</p>
         </div>
       </div>
-    `;
-  }catch(err){
-    console.error('Unexpected error loading contact info:', err);
-    targetEl.innerHTML = '<div class="muted">Unexpected error loading contact info.</div>';
+    `
+      )
+      .join("");
+  } catch (err) {
+    console.error("loadContactInfo error:", err);
   }
 }
 
-// ----------------- Feedback form (optional) -----------------
-const feedbackForm = document.getElementById('feedbackForm');
-if(feedbackForm){
-  feedbackForm.addEventListener('submit', async (e)=>{
+// ----------------- Feedback form -----------------
+const feedbackForm = document.getElementById("feedbackForm");
+if (feedbackForm) {
+  feedbackForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = document.getElementById('fbname')?.value || '';
-    const message = document.getElementById('fbmsg')?.value || '';
-    if(!name || !message){
-      alert('Please fill both fields.');
+
+    const name = document.getElementById("fbname")?.value.trim();
+    const message = document.getElementById("fbmsg")?.value.trim();
+
+    if (!name || !message) {
+      alert("Please fill both fields.");
       return;
     }
-    try{
-      const { error } = await supabaseClient.from('feedback').insert([{ name, message }]);
-      if(error){
-        console.error('Feedback insert error:', error);
-        alert('Could not send feedback (check feedback table).');
-      } else {
-        alert('Thanks for your feedback!');
-        if(document.getElementById('fbname')) document.getElementById('fbname').value = '';
-        if(document.getElementById('fbmsg')) document.getElementById('fbmsg').value = '';
-      }
-    }catch(err){
-      console.error('Unexpected feedback error:', err);
-      alert('Unexpected error sending feedback.');
+
+    const { error } = await window.supabaseClient
+      .from("feedback")
+      .insert([{ name, message }]);
+
+    if (error) {
+      console.error("Feedback error:", error);
+      alert("Error sending feedback.");
+      return;
     }
+
+    alert("Thank you for your feedback!");
+    feedbackForm.reset();
   });
 }
 
-// ----------------- Initialize on DOM ready -----------------
-document.addEventListener('DOMContentLoaded', async ()=>{
-  // Basic connectivity check (optional)
-  try{
-    // simple ping: request a small query to ensure keys are working
-    const { error: pingErr } = await supabaseClient.from('properties').select('id').limit(1);
-    if(pingErr) console.warn('Supabase ping returned an error (check keys & RLS):', pingErr.message);
-  }catch(e){
-    console.warn('Supabase ping failed (this may be expected if offline):', e);
-  }
-
-  // load everything
+// ----------------- Init -----------------
+document.addEventListener("DOMContentLoaded", () => {
   loadProperties();
   loadTeamMembers();
   loadContactInfo();
+  console.log("✅ Supabase ready");
 });
