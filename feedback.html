@@ -9,7 +9,7 @@
   <!-- ✅ Load Supabase FIRST -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- ✅ Load your global client -->
+  <!-- ✅ Load global client -->
   <script src="./script.js"></script>
 </head>
 
@@ -52,6 +52,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+  console.log('🟢 Feedback page loaded');
+
   if (!window.supabaseClient) {
     console.error('❌ Supabase client not ready');
     return;
@@ -66,23 +68,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const message = document.getElementById('fbmsg').value.trim();
 
     if (!name || !message) {
-      alert('Please fill all fields.');
+      alert('Please fill all fields');
       return;
     }
 
-    const { error } = await window.supabaseClient
+    console.log('📤 Sending feedback...', { name, message });
+
+    const { data, error } = await window.supabaseClient
       .from('feedback')
-      .insert([{ name, message }]);
+      .insert([{ name, message }])
+      .select(); // ✅ IMPORTANT
 
     if (error) {
-      console.error('Supabase insert error:', error);
-      alert('Error sending feedback.');
+      console.error('❌ Insert failed:', error);
+      alert('Failed to send feedback');
       return;
     }
 
-    alert('✅ Feedback sent!');
+    console.log('✅ Feedback saved:', data);
+
+    alert('Thanks for your feedback!');
     form.reset();
   });
+
 });
 </script>
 
