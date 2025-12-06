@@ -56,7 +56,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const { data, error } = await window.supabaseClient
     .from('contact_info')
-    .select('*');
+    .select('*')
+    .order('id');
+
+  console.log('📦 Contact data:', data);
 
   if (error) {
     console.error(error);
@@ -69,20 +72,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  const map = {};
-  data.forEach(row => map[row.type] = row.value);
-
   container.innerHTML = `
     <div class="card">
       <h3>Reach Us</h3>
-      ${map.phone ? `<p>📞 Phone: <a href="tel:${map.phone}">${map.phone}</a></p>` : ''}
-      ${map.whatsapp ? `<p>💬 WhatsApp: <a href="https://wa.me/${map.whatsapp.replace('+','')}" target="_blank">${map.whatsapp}</a></p>` : ''}
-      ${map.email ? `<p>✉️ Email: <a href="mailto:${map.email}">${map.email}</a></p>` : ''}
-      ${map.address ? `<p>📍 Address: ${map.address}</p>` : ''}
+      ${data.map(row => `
+        <p>
+          <strong>${row.label || row.type}:</strong>
+          ${row.value}
+        </p>
+      `).join('')}
     </div>
   `;
 });
 </script>
-
-</body>
-</html>
