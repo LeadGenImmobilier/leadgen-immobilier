@@ -2,58 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LeadGen Immobilier</title>
+  <title>Contact</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ 1. Load Supabase FIRST -->
+  <!-- ✅ 1. Supabase ALWAYS first -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
 
-  <!-- ✅ 2. THEN load your global script -->
+  <!-- ✅ 2. Your global init -->
   <script src="./script.js"></script>
 </head>
-
 <body>
 
 <h2>Contact Information</h2>
-<div id="contactInfo"></div>
+<div id="contactInfo">Loading...</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", function () {
 
+  // ✅ HARD GUARANTEE
   if (!window.supabaseClient) {
-    console.error('❌ Supabase client not ready');
+    console.error("❌ Supabase client not initialized");
+    document.getElementById("contactInfo").innerText =
+      "Supabase not ready. Check script.js path.";
     return;
   }
 
-  const contactInfo = document.getElementById('contactInfo');
+  loadContactInfo();
 
-  try {
-    const { data, error } = await window.supabaseClient
-      .from('contact_info')
-      .select('*');
+  async function loadContactInfo() {
+    try {
+      const { data, error } = await window.supabaseClient
+        .from("contact_info")
+        .select("*");
 
-    if (error) {
-      console.error(error);
-      contactInfo.innerHTML = '<p>Failed to load contact info.</p>';
-      return;
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        document.getElementById("contactInfo").innerText =
+          "No contact information found.";
+        return;
+      }
+
+      document.getElementById("contactInfo").innerHTML = data
+        .map(row => `
+          <p><strong>${row.label}:</strong> ${row.value}</p>
+        `)
+        .join("");
+
+      console.log("✅ Contact info loaded");
+
+    } catch (err) {
+      console.error("❌ Contact load error:", err);
+      document.getElementById("contactInfo").innerText =
+        "Error loading contact information.";
     }
-
-    if (!data || data.length === 0) {
-      contactInfo.innerHTML = '<p>No contact info available.</p>';
-      return;
-    }
-
-    contactInfo.innerHTML = data.map(row => `
-      <p><strong>${row.type}:</strong> ${row.value}</p>
-    `).join('');
-
-    console.log('✅ Contact info loaded');
-
-  } catch (err) {
-    console.error(err);
-    contactInfo.innerHTML = '<p>Unexpected error.</p>';
   }
 
 });
