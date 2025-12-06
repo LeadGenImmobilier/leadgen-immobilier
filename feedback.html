@@ -20,7 +20,7 @@ document.getElementById('feedbackForm').addEventListener('submit', async (e) => 
   try {
     const { error } = await window.supabaseClient
       .from('feedback')
-      .insert([{ name, message }]);
+      .insert([{ Full_name, message }]);
 
     if (error) {
       console.error(error);
