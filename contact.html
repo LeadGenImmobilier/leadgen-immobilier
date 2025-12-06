@@ -1,56 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>LeadGen Immobilier</title>
-
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- ✅ Supabase CDN (MUST BE FIRST) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
-
-  <!-- ✅ Your script -->
-  <script src="script.js"></script>
+  <title>Contact</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
-
-
 <body>
 
-<h2>Contact Information</h2>
-<div id="contactInfo">Loading...</div>
+<header>...</header>
+
+<section>
+  <h2>Contact Us</h2>
+  <div id="contactInfo"></div>
+</section>
 
 <script>
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", loadContact);
 
-  if (!window.supabaseClient) {
-    console.error("❌ Supabase client not initialized");
-    document.getElementById("contactInfo").innerText =
-      "Supabase client failed to initialize.";
-    return;
-  }
+async function loadContact() {
+  const { data, error } = await supabase.from("contact_info").select("*");
 
-  try {
-    const { data, error } = await window.supabaseClient
-      .from("contact_info")
-      .select("*");
+  const container = document.getElementById("contactInfo");
+  container.innerHTML = "";
 
-    if (error) throw error;
-
-    document.getElementById("contactInfo").innerHTML =
-      data.map(row =>
-        `<p><strong>${row.label}:</strong> ${row.value}</p>`
-      ).join("");
-
-    console.log("✅ Contact info loaded");
-
-  } catch (err) {
-    console.error(err);
-    document.getElementById("contactInfo").innerText =
-      "Error loading contact info.";
-  }
-
-});
+  data.forEach(c => {
+    container.innerHTML += `
+      <p><strong>${c.label}:</strong> ${c.value}</p>
+    `;
+  });
+}
 </script>
-</body>
-  
 
+</body>
+</html>
