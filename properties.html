@@ -1,21 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <title>Properties</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand"><div class="logo">LG</div>
+      <div>
+        <div class="brand-name">LeadGen Immobilier</div>
+        <div class="brand-tagline">Premium Real Estate</div>
+      </div>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="team.html">Team</a>
+      <a href="contact.html">Contact</a>
+      <a href="feedback.html">Feedback</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <h2>Available Properties</h2>
+  <div class="grid" id="propertiesList"></div>
+</section>
+
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", loadProperties);
 
-  if (!window.supabaseClient) {
-    console.error('❌ Supabase client not initialized');
-    return;
-  }
-
-  const { data, error } = await window.supabaseClient
-    .from('properties')
-    .select('*');
+async function loadProperties() {
+  const { data, error } = await supabaseClient.from("properties").select("*");
 
   if (error) {
-    console.error('❌ Supabase error:', error.message);
+    console.error("Error loading properties:", error);
     return;
   }
 
-  console.log('✅ Properties loaded:', data);
+  const container = document.getElementById("propertiesList");
+  container.innerHTML = "";
 
-});
+  data.forEach(p => {
+    container.innerHTML += `
+      <div class="card">
+        <img src="${p.image_url || 'https://via.placeholder.com/300'}">
+        <div class="card-info">
+          <h3>${p.title}</h3>
+          <p>${p.description || ''}</p>
+          <p><strong>Price:</strong> ${p.price || 'N/A'} MAD</p>
+        </div>
+      </div>
+    `;
+  });
+}
 </script>
+
+</body>
+</html>
