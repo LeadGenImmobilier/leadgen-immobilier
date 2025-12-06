@@ -39,7 +39,9 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
-  const { data, error } = await supabase.from("contact_info").select("*");
+  const { data, error } = await window.supabase
+    .from("contact_info")
+    .select("*");
 
   const container = document.getElementById("contactList");
 
