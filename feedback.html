@@ -4,12 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Feedback - LeadGen Immobilier</title>
+
 <link rel="stylesheet" href="style.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="feedback.js"></script>
+<script src="script.js" defer></script>
 </head>
 
 <body>
+
 <header>
   <div class="nav">
     <div class="brand">
@@ -33,17 +36,45 @@
   <h2>Leave Feedback</h2>
 
   <form id="feedbackForm" class="card" style="max-width:500px;margin:auto;">
-      <label>Name</label>
-      <input type="text" id="name">
+    <label>Name</label>
+    <input type="text" id="name" required>
 
-      <label>Message</label>
-      <textarea id="message"></textarea>
+    <label>Message</label>
+    <textarea id="message" required></textarea>
 
-      <button class="btn" type="submit">Submit</button>
+    <button class="btn" type="submit">Submit</button>
   </form>
 
   <p id="result" style="text-align:center;margin-top:15px;"></p>
 </section>
+
+<script>
+document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const message = document.getElementById("message").value.trim();
+  const result = document.getElementById("result");
+
+  if (!name || !message) {
+    result.textContent = "Please fill all fields.";
+    return;
+  }
+
+  const { error } = await supabase
+    .from("feedback")
+    .insert([{ name, message }]);
+
+  if (error) {
+    console.error(error);
+    result.textContent = "Error sending feedback.";
+    return;
+  }
+
+  result.textContent = "Thank you for your feedback!";
+  e.target.reset();
+});
+</script>
 
 </body>
 </html>
