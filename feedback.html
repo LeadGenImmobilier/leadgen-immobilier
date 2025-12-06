@@ -57,14 +57,34 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  document.getElementById('feedbackForm')
-    .addEventListener('submit', async (e) => {
+  const form = document.getElementById('feedbackForm');
 
-      e.preventDefault();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const name = document.getElementById('fbname').value.trim();
-      const message = document.getElementById('fbmsg').value.trim();
+    const name = document.getElementById('fbname').value.trim();
+    const message = document.getElementById('fbmsg').value.trim();
 
-      if (!name || !message) {
-        alert('Please fill all fields.');</script>
-  
+    if (!name || !message) {
+      alert('Please fill all fields.');
+      return;
+    }
+
+    const { error } = await window.supabaseClient
+      .from('feedback')
+      .insert([{ name, message }]);
+
+    if (error) {
+      console.error('Supabase insert error:', error);
+      alert('Error sending feedback.');
+      return;
+    }
+
+    alert('✅ Feedback sent!');
+    form.reset();
+  });
+});
+</script>
+
+</body>
+</html>
