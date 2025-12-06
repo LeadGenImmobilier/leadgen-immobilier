@@ -39,7 +39,7 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
-  const { data, error } = await window.supabase
+  const { data, error } = await window.supabaseClient
     .from("contact_info")
     .select("*");
 
