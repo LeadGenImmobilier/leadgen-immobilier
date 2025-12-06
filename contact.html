@@ -6,10 +6,10 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ 1. Load Supabase FIRST (NO defer) -->
+  <!-- Load Supabase FIRST -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- ✅ 2. Load script.js AFTER Supabase -->
+  <!-- Load global client -->
   <script src="./script.js"></script>
 </head>
 
@@ -36,62 +36,51 @@
 </header>
 
 <section>
-  <h2>Contact Us</h2>
+  <h2>Contact Information</h2>
 
-  <div id="contactInfo" class="grid">
-    <p>Loading contact information...</p>
-  </div>
+  <div id="contactInfo" class="grid"></div>
 </section>
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
 
-  // ✅ safety check
+  console.log('🟢 Contact page loaded');
+
   if (!window.supabaseClient) {
-    console.error('❌ Supabase client not initialized');
+    console.error('❌ Supabase client not ready');
     return;
   }
 
   const container = document.getElementById('contactInfo');
+  container.innerHTML = '<p>Loading contact information...</p>';
 
-  try {
-    const { data, error } = await window.supabaseClient
-      .from('contact_info')
-      .select('*');
+  const { data, error } = await window.supabaseClient
+    .from('contact_info')
+    .select('*');
 
-    if (error) {
-      console.error(error);
-      container.innerHTML = '<p>Error loading contact info.</p>';
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      container.innerHTML = '<p>No contact information available.</p>';
-      return;
-    }
-
-    const phone    = data.find(i => i.type === 'phone')?.value || '';
-    const whatsapp = data.find(i => i.type === 'whatsapp')?.value || '';
-    const email    = data.find(i => i.type === 'email')?.value || '';
-    const address  = data.find(i => i.type === 'address')?.value || '';
-
-    container.innerHTML = `
-      <div class="card">
-        <h3>Direct Contact</h3>
-        ${phone ? `<p>📞 <a href="tel:${phone}">${phone}</a></p>` : ''}
-        ${whatsapp ? `<p>💬 <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a></p>` : ''}
-        ${email ? `<p>📧 <a href="mailto:${email}">${email}</a></p>` : ''}
-        ${address ? `<p>📍 ${address}</p>` : ''}
-      </div>
-    `;
-
-    console.log('✅ Contact info loaded');
-
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = '<p>Unexpected error occurred.</p>';
+  if (error) {
+    console.error(error);
+    container.innerHTML = '<p>Error loading contact info.</p>';
+    return;
   }
 
+  if (!data || data.length === 0) {
+    container.innerHTML = '<p>No contact information found.</p>';
+    return;
+  }
+
+  const map = {};
+  data.forEach(row => map[row.type] = row.value);
+
+  container.innerHTML = `
+    <div class="card">
+      <h3>Reach Us</h3>
+      ${map.phone ? `<p>📞 Phone: <a href="tel:${map.phone}">${map.phone}</a></p>` : ''}
+      ${map.whatsapp ? `<p>💬 WhatsApp: <a href="https://wa.me/${map.whatsapp.replace('+','')}" target="_blank">${map.whatsapp}</a></p>` : ''}
+      ${map.email ? `<p>✉️ Email: <a href="mailto:${map.email}">${map.email}</a></p>` : ''}
+      ${map.address ? `<p>📍 Address: ${map.address}</p>` : ''}
+    </div>
+  `;
 });
 </script>
 
