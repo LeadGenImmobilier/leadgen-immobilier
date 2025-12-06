@@ -2,66 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Contact</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LeadGen Immobilier</title>
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ 1. Supabase ALWAYS first -->
+  <!-- ✅ 1. Supabase CDN (GLOBAL OBJECT) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
 
-  <!-- ✅ 2. Your global init -->
+  <!-- ✅ 2. Your global client -->
   <script src="./script.js"></script>
 </head>
+
 <body>
 
 <h2>Contact Information</h2>
 <div id="contactInfo">Loading...</div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async () => {
 
-  // ✅ HARD GUARANTEE
   if (!window.supabaseClient) {
     console.error("❌ Supabase client not initialized");
     document.getElementById("contactInfo").innerText =
-      "Supabase not ready. Check script.js path.";
+      "Supabase client failed to initialize.";
     return;
   }
 
-  loadContactInfo();
+  try {
+    const { data, error } = await window.supabaseClient
+      .from("contact_info")
+      .select("*");
 
-  async function loadContactInfo() {
-    try {
-      const { data, error } = await window.supabaseClient
-        .from("contact_info")
-        .select("*");
+    if (error) throw error;
 
-      if (error) throw error;
+    document.getElementById("contactInfo").innerHTML =
+      data.map(row =>
+        `<p><strong>${row.label}:</strong> ${row.value}</p>`
+      ).join("");
 
-      if (!data || data.length === 0) {
-        document.getElementById("contactInfo").innerText =
-          "No contact information found.";
-        return;
-      }
+    console.log("✅ Contact info loaded");
 
-      document.getElementById("contactInfo").innerHTML = data
-        .map(row => `
-          <p><strong>${row.label}:</strong> ${row.value}</p>
-        `)
-        .join("");
-
-      console.log("✅ Contact info loaded");
-
-    } catch (err) {
-      console.error("❌ Contact load error:", err);
-      document.getElementById("contactInfo").innerText =
-        "Error loading contact information.";
-    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById("contactInfo").innerText =
+      "Error loading contact info.";
   }
 
 });
 </script>
 
-</body>
-</html>
