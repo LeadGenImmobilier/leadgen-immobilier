@@ -38,7 +38,10 @@
 <section>
   <h2>Leave Feedback</h2>
 
-  <form id="feedbackForm" class="card" style="max-width:500px;margin:auto;">
+<form class="card"
+      style="max-width:500px;margin:auto;"
+      onsubmit="submitFeedback(event)">
+
     <label>Name</label>
     <input type="text" id="fbname" required>
 
@@ -92,6 +95,41 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+</script>
+<script>
+async function submitFeedback(e) {
+  e.preventDefault();
+
+  console.log('📤 Submit triggered');
+
+  const name = document.getElementById('fbname').value.trim();
+  const message = document.getElementById('fbmsg').value.trim();
+
+  if (!name || !message) {
+    alert('Please fill all fields');
+    return;
+  }
+
+  if (!window.supabaseClient) {
+    console.error('❌ Supabase client missing');
+    return;
+  }
+
+  const { data, error } = await window.supabaseClient
+    .from('feedback')
+    .insert([{ name, message }])
+    .select();
+
+  if (error) {
+    console.error('❌ Insert error:', error);
+    alert(error.message);
+    return;
+  }
+
+  console.log('✅ Feedback saved:', data);
+  alert('Thank you for your feedback!');
+  e.target.reset();
+}
 </script>
 
 </body>
