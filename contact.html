@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
   if (!window.supabaseClient) {
-    console.error('❌ Supabase client not ready');
+    console.error('❌ Supabase client missing');
     return;
   }
 
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     .select('*');
 
   if (error) {
-    console.error('❌ Contact load error:', error.message);
+    console.error('❌ Failed loading contact info:', error.message);
     return;
   }
 
