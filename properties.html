@@ -41,9 +41,9 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
-  console.log("Supabase:", window.supabase); // ✅ debug
+  console.log("Supabase:", window.supabaseClient); // ✅ debug
 
-  const { data, error } = await window.supabase
+  const { data, error } = await window.supabaseClient
     .from("properties")
     .select("*")
     .order("created_at", { ascending: false });
