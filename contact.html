@@ -1,66 +1,21 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contact - LeadGen Immobilier</title>
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js" defer></script>
-</head>
-
-<body>
-
-<header>
-  <div class="nav">
-    <div class="brand">
-      <div class="logo">LG</div>
-      <div>
-        <div class="brand-name">LeadGen Immobilier</div>
-        <div class="brand-tagline">Real estate lead generation & property marketing</div>
-      </div>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Properties</a>
-      <a href="team.html">Team</a>
-      <a class="active" href="contact.html">Contact</a>
-      <a href="feedback.html">Feedback</a>
-    </nav>
-  </div>
-</header>
-
-<section>
-  <h2>Contact Information</h2>
-  <div class="grid" id="contactList"></div>
-</section>
-
 <script>
-document.addEventListener("DOMContentLoaded", async () => {
-  const { data, error } = await window.supabaseClient
-    .from("contact_info")
-    .select("*");
+document.addEventListener('DOMContentLoaded', async () => {
 
-  const container = document.getElementById("contactList");
-
-  if (error) {
-    console.error(error);
-    container.innerHTML = "<p>Error loading contact info.</p>";
+  if (!window.supabaseClient) {
+    console.error('❌ Supabase client not ready');
     return;
   }
 
-  container.innerHTML = data.map(c => `
-    <div class="card">
-      <div class="card-info">
-        <h3>${c.label}</h3>
-        <p>${c.value}</p>
-      </div>
-    </div>
-  `).join("");
+  const { data, error } = await window.supabaseClient
+    .from('contact_info')
+    .select('*');
+
+  if (error) {
+    console.error('❌ Contact load error:', error.message);
+    return;
+  }
+
+  console.log('✅ Contact info loaded:', data);
+
 });
 </script>
-
-</body>
-</html>
