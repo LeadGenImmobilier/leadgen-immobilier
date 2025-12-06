@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Properties - LeadGen Immobilier</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Properties</title>
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- ✅ Supabase CDN (NO defer) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
+  <!-- ✅ 1. Load Supabase FIRST (NO defer) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- ✅ Global Supabase init -->
-  <script src="script.js" defer></script>
+  <!-- ✅ 2. Load script.js AFTER Supabase -->
+  <script src="./script.js"></script>
 </head>
+
 <body>
 
 <header>
