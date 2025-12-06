@@ -4,12 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Team - LeadGen Immobilier</title>
+
 <link rel="stylesheet" href="style.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="team.js"></script>
+<script src="script.js" defer></script>
 </head>
 
 <body>
+
 <header>
   <div class="nav">
     <div class="brand">
@@ -33,6 +36,30 @@
   <h2>Our Team</h2>
   <div class="grid" id="teamList"></div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data, error } = await supabase.from("team_members").select("*");
+
+  const list = document.getElementById("teamList");
+
+  if (error) {
+    console.error(error);
+    list.innerHTML = "<p>Error loading team.</p>";
+    return;
+  }
+
+  list.innerHTML = data.map(t => `
+    <div class="card">
+      <img src="${t.image_url || 'https://via.placeholder.com/300'}" alt="">
+      <div class="card-info">
+        <h3>${t.name}</h3>
+        <p>${t.role}</p>
+      </div>
+    </div>
+  `).join("");
+});
+</script>
 
 </body>
 </html>
