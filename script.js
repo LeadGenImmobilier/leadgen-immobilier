@@ -4,6 +4,8 @@
 const SUPABASE_URL = 'https://drkjmtanzqmjgpltjqcg.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N';
 
+export const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // Create a client (use a different variable name to avoid clobbering the global)
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
