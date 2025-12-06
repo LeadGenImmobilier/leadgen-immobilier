@@ -1,5 +1,5 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Contact</title>
@@ -12,30 +12,87 @@
   <!-- ✅ 2. Load script.js AFTER Supabase -->
   <script src="./script.js"></script>
 </head>
+
 <body>
 
-<header>...</header>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <div class="logo">LG</div>
+      <div>
+        <div class="brand-name">LeadGen Immobilier</div>
+        <div class="brand-tagline">Real Estate Lead Generation</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="team.html">Team</a>
+      <a class="active" href="contact.html">Contact</a>
+      <a href="feedback.html">Feedback</a>
+    </nav>
+  </div>
+</header>
 
 <section>
   <h2>Contact Us</h2>
-  <div id="contactInfo"></div>
+
+  <div id="contactInfo" class="grid">
+    <p>Loading contact information...</p>
+  </div>
 </section>
 
 <script>
-document.addEventListener("DOMContentLoaded", loadContact);
+document.addEventListener('DOMContentLoaded', async () => {
 
-async function loadContact() {
-  const { data, error } = await supabase.from("contact_info").select("*");
+  // ✅ safety check
+  if (!window.supabaseClient) {
+    console.error('❌ Supabase client not initialized');
+    return;
+  }
 
-  const container = document.getElementById("contactInfo");
-  container.innerHTML = "";
+  const container = document.getElementById('contactInfo');
 
-  data.forEach(c => {
-    container.innerHTML += `
-      <p><strong>${c.label}:</strong> ${c.value}</p>
+  try {
+    const { data, error } = await window.supabaseClient
+      .from('contact_info')
+      .select('*');
+
+    if (error) {
+      console.error(error);
+      container.innerHTML = '<p>Error loading contact info.</p>';
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      container.innerHTML = '<p>No contact information available.</p>';
+      return;
+    }
+
+    const phone    = data.find(i => i.type === 'phone')?.value || '';
+    const whatsapp = data.find(i => i.type === 'whatsapp')?.value || '';
+    const email    = data.find(i => i.type === 'email')?.value || '';
+    const address  = data.find(i => i.type === 'address')?.value || '';
+
+    container.innerHTML = `
+      <div class="card">
+        <h3>Direct Contact</h3>
+        ${phone ? `<p>📞 <a href="tel:${phone}">${phone}</a></p>` : ''}
+        ${whatsapp ? `<p>💬 <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a></p>` : ''}
+        ${email ? `<p>📧 <a href="mailto:${email}">${email}</a></p>` : ''}
+        ${address ? `<p>📍 ${address}</p>` : ''}
+      </div>
     `;
-  });
-}
+
+    console.log('✅ Contact info loaded');
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<p>Unexpected error occurred.</p>';
+  }
+
+});
 </script>
 
 </body>
