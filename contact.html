@@ -4,12 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Contact - LeadGen Immobilier</title>
+
 <link rel="stylesheet" href="style.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script defer src="contact.js"></script>
+<script src="script.js" defer></script>
 </head>
 
 <body>
+
 <header>
   <div class="nav">
     <div class="brand">
@@ -31,8 +34,31 @@
 
 <section>
   <h2>Contact Information</h2>
-  <div id="contactList"></div>
+  <div class="grid" id="contactList"></div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const { data, error } = await supabase.from("contact_info").select("*");
+
+  const container = document.getElementById("contactList");
+
+  if (error) {
+    console.error(error);
+    container.innerHTML = "<p>Error loading contact info.</p>";
+    return;
+  }
+
+  container.innerHTML = data.map(c => `
+    <div class="card">
+      <div class="card-info">
+        <h3>${c.label}</h3>
+        <p>${c.value}</p>
+      </div>
+    </div>
+  `).join("");
+});
+</script>
 
 </body>
 </html>
