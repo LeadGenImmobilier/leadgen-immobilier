@@ -39,7 +39,9 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
-  const { data, error } = await supabase.from("team_members").select("*");
+  const { data, error } = await window.supabase
+    .from("team_members")
+    .select("*");
 
   const list = document.getElementById("teamList");
 
@@ -51,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   list.innerHTML = data.map(t => `
     <div class="card">
-      <img src="${t.image_url || 'https://via.placeholder.com/300'}" alt="">
+      <img src="${t.image_url || 'https://via.placeholder.com/300'}">
       <div class="card-info">
         <h3>${t.name}</h3>
         <p>${t.role}</p>
