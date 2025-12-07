@@ -160,15 +160,18 @@ h2{
 ========================= */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:18px;
+  justify-items:center; /* ✅ centers team cards */
 }
 
 .card{
   background:var(--white);
   border-radius:12px;
-  padding:16px;
+  padding:20px;
   box-shadow:var(--card-shadow);
+  width:100%;
+  max-width:420px; /* ✅ half-width look */
 }
 
 /* DEFAULT IMAGE (PROPERTIES ETC.) */
@@ -180,17 +183,17 @@ h2{
 }
 
 /* =========================
-   ✅ TEAM AVATAR (FIX)
+   ✅ TEAM AVATAR (FINAL FIX)
 ========================= */
 .card .team-avatar{
-  width:120px;
-  height:120px;
+  width:150px;              /* ✅ bigger face */
+  height:150px;
   border-radius:50%;
   object-fit:cover;
   object-position:center 20%;
-  margin:16px auto 10px;
+  margin:18px auto 12px;
   display:block;
-  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  box-shadow:0 12px 30px rgba(0,0,0,0.18);
 }
 
 /* TEAM CARD TEXT */
@@ -201,7 +204,9 @@ h2{
 .card .card-info h3{
   margin-top:6px;
   font-weight:800;
+  font-size:20px;
   color:#0f172a;
+  text-transform:capitalize;
 }
 
 .card .card-info p{
@@ -277,53 +282,6 @@ footer{
   gap:8px;
 }
 
-.modal-backdrop{
-  position:fixed;
-  inset:0;
-  background:rgba(4,10,30,0.45);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:40;
-}
-
-.modal{
-  background:var(--white);
-  padding:18px;
-  border-radius:12px;
-  min-width:320px;
-  max-width:760px;
-}
-
-label{
-  display:block;
-  margin:8px 0 6px;
-  font-size:13px;
-}
-
-input[type=text],
-input[type=number],
-textarea{
-  width:100%;
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #e6eefb;
-}
-
-.row{
-  display:flex;
-  gap:8px;
-}
-
-.small{
-  width:120px;
-}
-
-.danger{
-  background:#ff4d4f;
-  color:white;
-}
-
 /* =========================
    RESPONSIVE
 ========================= */
@@ -336,8 +294,12 @@ textarea{
     font-size:22px;
   }
 
+  .card{
+    max-width:100%;
+  }
+
   .card .team-avatar{
-    width:96px;
-    height:96px;
+    width:120px;
+    height:120px;
   }
 }
