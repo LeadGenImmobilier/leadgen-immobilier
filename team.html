@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const { data, error } = await window.supabaseClient
     .from("team_members")
-    .select("*")
-    .order("created_at", { ascending: true });
+    .select("*");
+
 
   if (error) {
     console.error(error);
