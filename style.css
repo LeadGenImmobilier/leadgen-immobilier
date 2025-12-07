@@ -1,41 +1,68 @@
-/* =========================
-   GLOBAL
-========================= */
+/* ======================================
+   VARIABLES & RESET
+====================================== */
 :root{
   --primary:#0b5ed7;
+  --primary-dark:#084298;
   --white:#ffffff;
   --muted:#f4f6fb;
-  --card-shadow: 0 6px 18px rgba(11,94,215,0.12);
-  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  --text-dark:#0f172a;
+  --text-muted:#475569;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --shadow-sm:0 4px 12px rgba(0,0,0,.08);
+  --shadow-md:0 8px 24px rgba(11,94,215,.18);
+  --shadow-lg:0 16px 40px rgba(11,94,215,.25);
+  --transition:all .25s ease;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
 
-*{
+*,
+*::before,
+*::after{
   box-sizing:border-box;
   margin:0;
   padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
   background:linear-gradient(180deg,var(--muted),#fff);
   color:var(--primary);
   font-family:inherit;
+  line-height:1.55;
+}
+
+img{
+  max-width:100%;
+  display:block;
 }
 
 a{
   text-decoration:none;
   color:var(--primary);
+  transition:var(--transition);
 }
 
-/* =========================
-   HEADER
-========================= */
+a:hover{
+  color:var(--primary-dark);
+}
+
+/* ======================================
+   HEADER / NAVBAR
+====================================== */
 header{
   background:var(--white);
   border-bottom:1px solid #e6eefb;
   padding:18px 24px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:50;
+  backdrop-filter:saturate(140%) blur(6px);
 }
 
 .nav{
@@ -48,8 +75,8 @@ header{
 
 .brand{
   display:flex;
-  gap:12px;
   align-items:center;
+  gap:12px;
 }
 
 .logo{
@@ -59,215 +86,235 @@ header{
   align-items:center;
 }
 
-.logo img{
-  height:46px;
-  width:auto;
-}
-
 .brand-name{
-  font-weight:800;
+  font-weight:900;
+  letter-spacing:.3px;
 }
 
 .brand-tagline{
   font-size:13px;
-  color:#475569;
+  color:var(--text-muted);
+}
+
+/* NAV LINKS */
+nav{
+  display:flex;
+  align-items:center;
 }
 
 nav a{
   margin:0 8px;
   font-weight:600;
+  position:relative;
 }
 
-/* =========================
+nav a::after{
+  content:"";
+  position:absolute;
+  bottom:-6px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--primary);
+  transition:var(--transition);
+}
+
+nav a:hover::after{
+  width:100%;
+}
+
+/* ======================================
    BUTTONS
-========================= */
+====================================== */
 .btn{
-  background:var(--white);
-  color:var(--primary);
-  padding:10px 14px;
-  border-radius:8px;
+  padding:10px 16px;
+  border-radius:var(--radius-sm);
   border:none;
-  font-weight:700;
   cursor:pointer;
+  font-weight:700;
+  transition:var(--transition);
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:white;
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+  transform:translateY(-1px);
+  box-shadow:var(--shadow-sm);
 }
 
 .btn-outline{
   background:transparent;
   border:2px solid var(--white);
-  color:var(--white);
+  color:white;
 }
 
-/* =========================
+.btn-outline:hover{
+  background:white;
+  color:var(--primary);
+}
+
+/* ======================================
    HERO
-========================= */
+====================================== */
 .hero{
   max-width:1100px;
   margin:28px auto;
-  padding:28px;
-  background:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=60')
+  padding:32px;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.35)),
+    url("https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=60")
     center/cover no-repeat;
-  border-radius:12px;
-  color:var(--white);
+  border-radius:var(--radius-lg);
+  color:white;
+  min-height:340px;
   display:flex;
   align-items:center;
-  min-height:320px;
 }
 
 .hero .content{
-  backdrop-filter:blur(4px);
-  background:rgba(0,0,0,0.25);
-  padding:22px;
-  border-radius:10px;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(6px);
+  border-radius:var(--radius-md);
+  padding:24px;
+  max-width:520px;
 }
 
 .hero h1{
-  font-size:32px;
-  margin-bottom:8px;
+  font-size:34px;
+  margin-bottom:10px;
 }
 
 .hero p{
-  opacity:0.95;
-  margin-bottom:12px;
+  opacity:.95;
 }
 
 .hero-buttons{
   display:flex;
-  gap:10px;
-  margin-top:12px;
+  gap:12px;
+  margin-top:16px;
 }
 
-/* =========================
-   SECTIONS
-========================= */
+/* ======================================
+   SECTIONS (GLOBAL)
+====================================== */
 section{
   max-width:1100px;
-  margin:28px auto;
+  margin:40px auto;
   padding:0 16px;
 }
 
 h2{
-  color:var(--primary);
-  margin-bottom:12px;
+  font-size:26px;
+  margin-bottom:10px;
 }
 
 .muted{
-  color:#475569;
-  font-size:13px;
+  font-size:14px;
+  color:var(--text-muted);
 }
 
-/* =========================
-   GRID
-========================= */
+/* ======================================
+   GRID SYSTEM
+====================================== */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:18px;
-  justify-items:center;
+  gap:20px;
 }
 
-/* =========================
-   CARD (BASE)
-========================= */
+/* ======================================
+   CARD SYSTEM
+====================================== */
 .card{
-  background:var(--white);
-  border-radius:12px;
-  padding:16px;
-  box-shadow:var(--card-shadow);
-  width:100%;
-  max-width:420px;
+  background:white;
+  border-radius:var(--radius-md);
+  padding:18px;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-md);
 }
 
 .card img{
-  width:100%;
   height:160px;
   object-fit:cover;
-  border-radius:8px;
+  border-radius:var(--radius-sm);
 }
 
-/* =========================
-   TEAM AVATAR
-========================= */
-.card .team-avatar{
+/* ======================================
+   TEAM / AVATAR
+====================================== */
+.team-avatar{
   width:150px;
   height:150px;
   border-radius:50%;
-  object-fit:cover;
-  object-position:center 20%;
   margin:18px auto 12px;
-  display:block;
-  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  object-fit:cover;
+  box-shadow:var(--shadow-md);
 }
 
-.card .card-info{
+.card-info{
   text-align:center;
 }
 
-.card .card-info h3{
-  margin-top:6px;
+.card-info h3{
   font-weight:800;
-  font-size:20px;
-  color:#0f172a;
-  text-transform:capitalize;
+  color:var(--text-dark);
 }
 
-.card .card-info p{
+.card-info p{
   font-size:14px;
-  color:#475569;
+  color:var(--text-muted);
 }
 
-/* =========================
-   TEAM MESSAGE
-========================= */
+/* ======================================
+   MESSAGE / CTA BOX
+====================================== */
 .team-message{
   max-width:900px;
-  margin:48px auto 0;
-  padding:28px;
+  margin:60px auto;
+  padding:32px;
+  border-radius:var(--radius-lg);
   background:linear-gradient(135deg,#ffffff,#f8faff);
-  border-radius:14px;
   text-align:center;
-  box-shadow:0 10px 30px rgba(11,94,215,.12);
-}
-
-.team-message h3{
-  font-size:22px;
-  font-weight:800;
-  margin-bottom:12px;
-  color:#0f172a;
+  box-shadow:var(--shadow-lg);
 }
 
 .team-message p{
   font-size:16px;
   line-height:1.7;
-  color:#475569;
+  color:var(--text-muted);
 }
 
-/* =========================
-   META
-========================= */
+/* ======================================
+   META INFO
+====================================== */
 .meta{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-top:10px;
-}
-
-.meta .name{
-  font-weight:700;
+  margin-top:14px;
 }
 
 .meta .price{
-  font-weight:800;
-  color:var(--primary);
+  font-size:18px;
+  font-weight:900;
 }
 
-/* =========================
+/* ======================================
    FOOTER
-========================= */
+====================================== */
 footer{
   background:#072b5b;
-  color:var(--white);
-  padding:20px;
-  margin-top:28px;
+  color:white;
+  padding:30px 20px;
 }
 
 .footer-grid{
@@ -276,88 +323,70 @@ footer{
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
-  align-items:center;
+  gap:16px;
 }
 
 .footer-links a{
-  margin-left:12px;
   color:white;
+  opacity:.85;
 }
 
-/* =========================
-   ADMIN
-========================= */
+.footer-links a:hover{
+  opacity:1;
+}
+
+/* ======================================
+   ADMIN PANEL (FLOATING)
+====================================== */
 .admin-panel{
   position:fixed;
-  right:18px;
-  bottom:18px;
+  right:20px;
+  bottom:20px;
   background:var(--primary);
-  color:var(--white);
-  padding:12px;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(11,94,215,0.18);
-  z-index:30;
+  color:white;
+  border-radius:var(--radius-md);
+  padding:14px;
+  box-shadow:var(--shadow-lg);
+  z-index:100;
 }
 
-.admin-title{
-  font-weight:800;
-}
-
-.admin-buttons{
-  margin-top:10px;
-  display:flex;
-  gap:8px;
-}
-
-.topbar-controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-/* =========================
-   ✅ MOBILE RESPONSIVE (FINAL)
-========================= */
-@media (max-width: 768px){
-
-  header{
-    padding:14px 16px;
+/* ======================================
+   GLOBAL ANIMATIONS
+====================================== */
+@keyframes fadeUp {
+  from{
+    opacity:0;
+    transform:translateY(20px);
   }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+section,
+.card,
+.hero{
+  animation:fadeUp .6s ease both;
+}
+
+/* ======================================
+   MOBILE (FINAL POLISH)
+====================================== */
+@media(max-width:768px){
 
   .nav{
     flex-direction:column;
     gap:12px;
-    align-items:flex-start;
-  }
-
-  nav{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-  }
-
-  nav a{
-    margin:0;
-    font-size:14px;
   }
 
   .hero{
-    margin:16px;
     padding:16px;
-    min-height:180px;
+    min-height:200px;
   }
 
   .hero h1{
-    font-size:20px;
-  }
-
-  .hero p{
-    font-size:14px;
-  }
-
-  section{
-    margin:20px auto;
-    padding:0 12px;
+    font-size:22px;
   }
 
   h2{
@@ -368,37 +397,8 @@ footer{
     grid-template-columns:1fr;
   }
 
-  .card img{
-    height:140px;
-  }
-
-  .card .team-avatar{
-    width:120px;
-    height:120px;
-  }
-
-  .card-info h3{
-    font-size:16px;
-  }
-
-  .card-info p{
-    font-size:14px;
-  }
-
-  .contact-grid{
-    grid-template-columns:1fr;
-  }
-
   .footer-grid{
     flex-direction:column;
-    gap:14px;
     text-align:center;
-  }
-
-  .footer-links{
-    display:flex;
-    gap:12px;
-    justify-content:center;
-    flex-wrap:wrap;
   }
 }
