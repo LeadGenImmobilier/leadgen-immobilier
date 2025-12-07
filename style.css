@@ -402,3 +402,45 @@ section,
     text-align:center;
   }
 }
+/* ======================================
+   FOOTER CONTACT INFO – SEPARATION & LINES
+====================================== */
+
+/* Wrapper if you already group contacts */
+.footer-contact,
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* separation between items */
+}
+
+/* Individual contact items */
+.footer-contact a,
+.footer-contact p,
+.footer-links a {
+  position: relative;
+  padding-bottom: 6px;       /* space before line */
+  margin-bottom: 6px;
+  width: fit-content;
+}
+
+/* Underline separator */
+.footer-contact a::after,
+.footer-contact p::after,
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40%;
+  height: 2px;
+  background: rgba(255,255,255,0.3);
+  transition: width .3s ease, background .3s ease;
+}
+
+/* Hover effect */
+.footer-contact a:hover::after,
+.footer-links a:hover::after {
+  width: 100%;
+  background: white;
+}
