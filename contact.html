@@ -56,8 +56,7 @@
     .email { background:#ef4444; }
     .instagram { background:#e11d48; }
     .facebook { background:#1877f2; }
-    .tiktok {background: linear-gradient(135deg, #25F4EE, #000, #FE2C55); }
-
+    .tiktok { background: linear-gradient(135deg, #25F4EE, #000, #FE2C55); }
 
     .contact-text strong {
       display:block;
@@ -76,7 +75,15 @@
 <header>
   <div class="nav">
     <div class="brand">
-      <div class="logo">LG</div>
+
+      <!-- ✅ FIXED LOGO (Supabase SVG) -->
+      <a href="index.html" class="logo">
+        <img
+          src="https://drkjmtanzqmjgpltjqcg.supabase.co/storage/v1/object/public/images/assets/logo1.svg"
+          alt="LeadGen Immobilier Logo"
+        >
+      </a>
+
       <div>
         <div class="brand-name">LeadGen Immobilier</div>
         <div class="brand-tagline">Real Estate Lead Generation</div>
@@ -95,7 +102,6 @@
 
 <section>
   <h2>Contact Us</h2>
-
   <div id="contactGrid" class="contact-grid"></div>
 </section>
 
@@ -118,45 +124,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
- const linkMap = {
-  phone: v => `tel:${v}`,
-  whatsapp: v => `https://wa.me/${v.replace('+','')}`,
-  email: v => `mailto:${v}`,
-  instagram: v => v,
-  facebook: v => v,
-  tiktok: v => v
-};
+  const linkMap = {
+    phone: v => `tel:${v}`,
+    whatsapp: v => `https://wa.me/${v.replace('+','')}`,
+    email: v => `mailto:${v}`,
+    instagram: v => v,
+    facebook: v => v,
+    tiktok: v => v
+  };
 
-const iconMap = {
-  phone: { style: 'fa-solid', name: 'fa-phone' },
-  email: { style: 'fa-solid', name: 'fa-envelope' },
-  whatsapp: { style: 'fa-brands', name: 'fa-whatsapp' },
-  instagram: { style: 'fa-brands', name: 'fa-instagram' },
-  facebook: { style: 'fa-brands', name: 'fa-facebook' },
-  tiktok: { style: 'fa-brands', name: 'fa-tiktok' }
-};
+  const iconMap = {
+    phone: { style: 'fa-solid', name: 'fa-phone' },
+    email: { style: 'fa-solid', name: 'fa-envelope' },
+    whatsapp: { style: 'fa-brands', name: 'fa-whatsapp' },
+    instagram: { style: 'fa-brands', name: 'fa-instagram' },
+    facebook: { style: 'fa-brands', name: 'fa-facebook' },
+    tiktok: { style: 'fa-brands', name: 'fa-tiktok' }
+  };
 
+  grid.innerHTML = data.map(row => `
+    <a class="contact-card"
+       href="${linkMap[row.type]?.(row.value) || '#'}"
+       target="_blank"
+       aria-label="${row.label}">
 
+      <div class="contact-icon ${row.type}">
+        <i class="${iconMap[row.type]?.style} ${iconMap[row.type]?.name}"></i>
+      </div>
 
- 
-     grid.innerHTML = data.map(row => `
-  <a class="contact-card"
-     href="${linkMap[row.type]?.(row.value) || '#'}"
-     target="_blank"
-     aria-label="${row.label}">
-
-    <div class="contact-icon ${row.type}">
-     <i class="${iconMap[row.type]?.style || 'fa-solid'} ${iconMap[row.type]?.name || 'fa-circle'}"></i>
-
-    </div>
-
-    <div class="contact-text">
-      <strong>${row.label}</strong>
-    </div>
-  </a>
-`).join('');
-
- 
+      <div class="contact-text">
+        <strong>${row.label}</strong>
+      </div>
+    </a>
+  `).join('');
 });
 </script>
 
