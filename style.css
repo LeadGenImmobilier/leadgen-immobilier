@@ -1,5 +1,5 @@
 /* =========================
-   GLOBAL (UNCHANGED)
+   GLOBAL
 ========================= */
 :root{
   --primary:#0b5ed7;
@@ -27,7 +27,7 @@ a{
 }
 
 /* =========================
-   HEADER (UNCHANGED)
+   HEADER
 ========================= */
 header{
   background:var(--white);
@@ -64,10 +64,6 @@ header{
   width:auto;
 }
 
-
-
-
-
 .brand-name{
   font-weight:800;
 }
@@ -83,7 +79,7 @@ nav a{
 }
 
 /* =========================
-   BUTTONS (UNCHANGED)
+   BUTTONS
 ========================= */
 .btn{
   background:var(--white);
@@ -102,13 +98,14 @@ nav a{
 }
 
 /* =========================
-   HERO (UNCHANGED)
+   HERO
 ========================= */
 .hero{
   max-width:1100px;
   margin:28px auto;
   padding:28px;
-  background:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=60') center/cover no-repeat;
+  background:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=60')
+    center/cover no-repeat;
   border-radius:12px;
   color:var(--white);
   display:flex;
@@ -140,7 +137,7 @@ nav a{
 }
 
 /* =========================
-   SECTIONS (UNCHANGED)
+   SECTIONS
 ========================= */
 section{
   max-width:1100px;
@@ -159,7 +156,7 @@ h2{
 }
 
 /* =========================
-   GRID (UPGRADED FOR TEAM)
+   GRID
 ========================= */
 .grid{
   display:grid;
@@ -169,7 +166,7 @@ h2{
 }
 
 /* =========================
-   CARDS (BASE – UNCHANGED)
+   CARD (BASE)
 ========================= */
 .card{
   background:var(--white);
@@ -177,10 +174,9 @@ h2{
   padding:16px;
   box-shadow:var(--card-shadow);
   width:100%;
-  max-width:420px; /* ✅ team half-space look */
+  max-width:420px;
 }
 
-/* DEFAULT IMAGES (PROPERTIES ETC.) */
 .card img{
   width:100%;
   height:160px;
@@ -189,7 +185,7 @@ h2{
 }
 
 /* =========================
-   ✅ TEAM AVATAR (NEW – DOES NOT AFFECT HOME)
+   TEAM AVATAR
 ========================= */
 .card .team-avatar{
   width:150px;
@@ -202,7 +198,6 @@ h2{
   box-shadow:0 12px 30px rgba(0,0,0,.18);
 }
 
-/* TEAM TEXT */
 .card .card-info{
   text-align:center;
 }
@@ -221,7 +216,7 @@ h2{
 }
 
 /* =========================
-   ✅ TEAM MESSAGE (BOTTOM TEXT)
+   TEAM MESSAGE
 ========================= */
 .team-message{
   max-width:900px;
@@ -247,7 +242,7 @@ h2{
 }
 
 /* =========================
-   META, FOOTER, ADMIN (UNCHANGED)
+   META
 ========================= */
 .meta{
   display:flex;
@@ -265,6 +260,9 @@ h2{
   color:var(--primary);
 }
 
+/* =========================
+   FOOTER
+========================= */
 footer{
   background:#072b5b;
   color:var(--white);
@@ -286,6 +284,9 @@ footer{
   color:white;
 }
 
+/* =========================
+   ADMIN
+========================= */
 .admin-panel{
   position:fixed;
   right:18px;
@@ -315,123 +316,89 @@ footer{
 }
 
 /* =========================
-   RESPONSIVE (SAFE)
+   ✅ MOBILE RESPONSIVE (FINAL)
 ========================= */
-@media(max-width:700px){
+@media (max-width: 768px){
+
+  header{
+    padding:14px 16px;
+  }
+
+  .nav{
+    flex-direction:column;
+    gap:12px;
+    align-items:flex-start;
+  }
+
+  nav{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  nav a{
+    margin:0;
+    font-size:14px;
+  }
+
   .hero{
-    min-height:220px;
+    margin:16px;
+    padding:16px;
+    min-height:180px;
   }
 
   .hero h1{
-    font-size:22px;
+    font-size:20px;
+  }
+
+  .hero p{
+    font-size:14px;
+  }
+
+  section{
+    margin:20px auto;
+    padding:0 12px;
+  }
+
+  h2{
+    font-size:20px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .card img{
+    height:140px;
   }
 
   .card .team-avatar{
     width:120px;
     height:120px;
   }
-}
-/* =========================
-   ✅ MOBILE RESPONSIVE FIX
-   ========================= */
-@media (max-width: 768px) {
 
-  /* HEADER / NAV */
-  header {
-    padding: 14px 16px;
+  .card-info h3{
+    font-size:16px;
   }
 
-  .nav {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
+  .card-info p{
+    font-size:14px;
   }
 
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  .contact-grid{
+    grid-template-columns:1fr;
   }
 
-  nav a {
-    margin: 0;
-    font-size: 14px;
+  .footer-grid{
+    flex-direction:column;
+    gap:14px;
+    text-align:center;
   }
 
-  /* HERO */
-  .hero {
-    margin: 16px;
-    padding: 16px;
-    min-height: 180px;
-  }
-
-  .hero h1 {
-    font-size: 20px;
-  }
-
-  .hero p {
-    font-size: 14px;
-  }
-
-  /* SECTIONS */
-  section {
-    margin: 20px auto;
-    padding: 0 12px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
-
-  /* GRID */
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  /* CARDS */
-  .card {
-    padding: 14px;
-  }
-
-  .card img {
-    height: 140px;
-  }
-
-  /* TEAM PAGE FIX */
-  .team-photo,
-  .card img.team-photo {
-    width: 110px;
-    height: 110px;
-  }
-
-  .card-info h3 {
-    font-size: 16px;
-  }
-
-  .card-info p {
-    font-size: 14px;
-  }
-
-  /* CONTACT PAGE */
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-card {
-    padding: 16px;
-  }
-
-  /* FOOTER */
-  .footer-grid {
-    flex-direction: column;
-    gap: 14px;
-    text-align: center;
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
+  .footer-links{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
   }
 }
