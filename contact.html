@@ -118,35 +118,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  const linkMap = {
-    phone: v => `tel:${v}`,
-    whatsapp: v => `https://wa.me/${v.replace('+','')}`,
-    email: v => `mailto:${v}`,
-    instagram: v => v,
-    facebook: v => v
-    tiktok: v => v
-  };
+ const linkMap = {
+  phone: v => `tel:${v}`,
+  whatsapp: v => `https://wa.me/${v.replace('+','')}`,
+  email: v => `mailto:${v}`,
+  instagram: v => v,
+  facebook: v => v,
+  tiktok: v => v
+};
 
-  const iconMap = {
-    phone: 'fa-phone',
-    whatsapp: 'fa-whatsapp',
-    email: 'fa-envelope',
-    instagram: 'fa-instagram',
-    facebook: 'fa-facebook'
-    tiktok: 'fa-tiktok'
-  };
+const iconMap = {
+  phone: 'fa-phone',
+  whatsapp: 'fa-whatsapp',
+  email: 'fa-envelope',
+  instagram: 'fa-instagram',
+  facebook: 'fa-facebook',
+  tiktok: 'fa-tiktok'
+};
 
-  grid.innerHTML = data.map(row => `
-    <a class="contact-card" href="${linkMap[row.type]?.(row.value) || '#'}" target="_blank">
-      <div class="contact-icon ${row.type}">
-        <i class="fa-solid ${iconMap[row.type] || 'fa-circle'}"></i>
-      </div>
-      <div class="contact-text">
-        <strong>${row.label}</strong>
-        <span>${row.value}</span>
-      </div>
-    </a>
-  `).join('');
+
+ 
+     grid.innerHTML = data.map(row => `
+  <a class="contact-card"
+     href="${linkMap[row.type]?.(row.value) || '#'}"
+     target="_blank"
+     aria-label="${row.label}">
+
+    <div class="contact-icon ${row.type}">
+      <i class="fa-solid ${iconMap[row.type] || 'fa-circle'}"></i>
+    </div>
+
+    <div class="contact-text">
+      <strong>${row.label}</strong>
+    </div>
+  </a>
+`).join('');
+
+ 
 });
 </script>
 
