@@ -1,3 +1,6 @@
+/* =========================
+   GLOBAL
+========================= */
 :root{
   --primary:#0b5ed7;
   --white:#ffffff;
@@ -5,20 +8,27 @@
   --card-shadow: 0 6px 18px rgba(11,94,215,0.12);
   font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
 }
+
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
 }
+
 body{
   background:linear-gradient(180deg,var(--muted),#fff);
   color:var(--primary);
   font-family:inherit;
 }
+
 a{
   text-decoration:none;
   color:var(--primary);
 }
+
+/* =========================
+   HEADER
+========================= */
 header{
   background:var(--white);
   border-bottom:1px solid #e6eefb;
@@ -27,6 +37,7 @@ header{
   top:0;
   z-index:10;
 }
+
 .nav{
   max-width:1100px;
   margin:0 auto;
@@ -34,11 +45,13 @@ header{
   align-items:center;
   justify-content:space-between;
 }
+
 .brand{
   display:flex;
   gap:12px;
   align-items:center;
 }
+
 .logo{
   width:46px;
   height:46px;
@@ -51,17 +64,24 @@ header{
   font-weight:700;
   font-size:18px;
 }
+
 .brand-name{
   font-weight:800;
 }
+
 .brand-tagline{
   font-size:13px;
   color:#475569;
 }
+
 nav a{
   margin:0 8px;
   font-weight:600;
 }
+
+/* =========================
+   BUTTONS
+========================= */
 .btn{
   background:var(--white);
   color:var(--primary);
@@ -71,11 +91,16 @@ nav a{
   font-weight:700;
   cursor:pointer;
 }
+
 .btn-outline{
   background:transparent;
   border:2px solid var(--white);
   color:var(--white);
 }
+
+/* =========================
+   HERO
+========================= */
 .hero{
   max-width:1100px;
   margin:28px auto;
@@ -87,74 +112,132 @@ nav a{
   align-items:center;
   min-height:320px;
 }
+
 .hero .content{
   backdrop-filter:blur(4px);
   background:rgba(0,0,0,0.25);
   padding:22px;
   border-radius:10px;
 }
+
 .hero h1{
   font-size:32px;
   margin-bottom:8px;
 }
+
 .hero p{
   opacity:0.95;
   margin-bottom:12px;
 }
+
 .hero-buttons{
   display:flex;
   gap:10px;
   margin-top:12px;
 }
+
+/* =========================
+   SECTIONS
+========================= */
 section{
   max-width:1100px;
   margin:28px auto;
   padding:0 16px;
 }
+
 h2{
   color:var(--primary);
   margin-bottom:12px;
 }
+
 .muted{
   color:#475569;
   font-size:13px;
 }
+
+/* =========================
+   GRID & CARDS
+========================= */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:18px;
 }
+
 .card{
   background:var(--white);
   border-radius:12px;
-  padding:12px;
+  padding:16px;
   box-shadow:var(--card-shadow);
 }
+
+/* DEFAULT IMAGE (PROPERTIES ETC.) */
 .card img{
   width:100%;
   height:160px;
   object-fit:cover;
   border-radius:8px;
 }
+
+/* =========================
+   ✅ TEAM AVATAR (FIX)
+========================= */
+.card .team-avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  object-position:center 20%;
+  margin:16px auto 10px;
+  display:block;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* TEAM CARD TEXT */
+.card .card-info{
+  text-align:center;
+}
+
+.card .card-info h3{
+  margin-top:6px;
+  font-weight:800;
+  color:#0f172a;
+}
+
+.card .card-info p{
+  font-size:14px;
+  color:#475569;
+}
+
+/* =========================
+   META (PRICES, ETC.)
+========================= */
 .meta{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-top:10px;
 }
+
 .meta .name{
   font-weight:700;
 }
+
 .meta .price{
   font-weight:800;
   color:var(--primary);
 }
+
+/* =========================
+   FOOTER
+========================= */
 footer{
   background:#072b5b;
   color:var(--white);
   padding:20px;
   margin-top:28px;
 }
+
 .footer-grid{
   max-width:1100px;
   margin:0 auto;
@@ -163,10 +246,15 @@ footer{
   flex-wrap:wrap;
   align-items:center;
 }
+
 .footer-links a{
   margin-left:12px;
   color:white;
 }
+
+/* =========================
+   ADMIN UI
+========================= */
 .admin-panel{
   position:fixed;
   right:18px;
@@ -178,14 +266,17 @@ footer{
   box-shadow:0 8px 20px rgba(11,94,215,0.18);
   z-index:30;
 }
+
 .admin-title{
   font-weight:800;
 }
+
 .admin-buttons{
   margin-top:10px;
   display:flex;
   gap:8px;
 }
+
 .modal-backdrop{
   position:fixed;
   inset:0;
@@ -195,6 +286,7 @@ footer{
   justify-content:center;
   z-index:40;
 }
+
 .modal{
   background:var(--white);
   padding:18px;
@@ -202,39 +294,50 @@ footer{
   min-width:320px;
   max-width:760px;
 }
+
 label{
   display:block;
   margin:8px 0 6px;
   font-size:13px;
 }
-input[type=text],input[type=number],textarea{
+
+input[type=text],
+input[type=number],
+textarea{
   width:100%;
   padding:10px;
   border-radius:8px;
   border:1px solid #e6eefb;
 }
+
 .row{
   display:flex;
   gap:8px;
 }
+
 .small{
   width:120px;
 }
+
 .danger{
   background:#ff4d4f;
   color:white;
 }
-.topbar-controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
+
+/* =========================
+   RESPONSIVE
+========================= */
 @media(max-width:700px){
   .hero{
     min-height:220px;
   }
+
   .hero h1{
     font-size:22px;
   }
-}
 
+  .card .team-avatar{
+    width:96px;
+    height:96px;
+  }
+}
