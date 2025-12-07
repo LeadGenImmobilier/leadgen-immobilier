@@ -128,13 +128,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 };
 
 const iconMap = {
-  phone: 'fa-phone',
-  whatsapp: 'fa-whatsapp',
-  email: 'fa-envelope',
-  instagram: 'fa-instagram',
-  facebook: 'fa-facebook',
-  tiktok: 'fa-tiktok'
+  phone: { style: 'fa-solid', name: 'fa-phone' },
+  email: { style: 'fa-solid', name: 'fa-envelope' },
+  whatsapp: { style: 'fa-brands', name: 'fa-whatsapp' },
+  instagram: { style: 'fa-brands', name: 'fa-instagram' },
+  facebook: { style: 'fa-brands', name: 'fa-facebook' },
+  tiktok: { style: 'fa-brands', name: 'fa-tiktok' }
 };
+
 
 
  
@@ -145,7 +146,8 @@ const iconMap = {
      aria-label="${row.label}">
 
     <div class="contact-icon ${row.type}">
-      <i class="fa-solid ${iconMap[row.type] || 'fa-circle'}"></i>
+     <i class="${iconMap[row.type]?.style || 'fa-solid'} ${iconMap[row.type]?.name || 'fa-circle'}"></i>
+
     </div>
 
     <div class="contact-text">
