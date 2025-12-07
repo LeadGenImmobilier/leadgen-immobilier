@@ -10,7 +10,7 @@
 <!-- ✅ Load Supabase FIRST -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- ✅ Load your global client (NO defer) -->
+<!-- ✅ Load your global client -->
 <script src="script.js"></script>
 </head>
 
@@ -25,6 +25,7 @@
         <div class="brand-tagline">Real estate lead generation & property marketing</div>
       </div>
     </div>
+
     <nav>
       <a href="index.html">Home</a>
       <a href="properties.html">Properties</a>
@@ -53,8 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const { data, error } = await window.supabaseClient
     .from("team_members")
-    .select("*");
-
+    .select("id, name, role, image");
 
   if (error) {
     console.error(error);
@@ -67,15 +67,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  list.innerHTML = data.map(t => `
-    <div class="card">
-      <img src="${t.image_url || 'https://via.placeholder.com/300'}" alt="${t.name}">
-      <div class="card-info">
-        <h3>${t.name}</h3>
-        <p>${t.role}</p>
+  const BASE_IMAGE_URL =
+    "https://drkjmtanzqmjgpltjqcg.supabase.co/storage/v1/object/public/images/";
+
+  list.innerHTML = data.map(t => {
+    const imageUrl = t.image
+      ? BASE_IMAGE_URL + t.image
+      : "https://via.placeholder.com/300";
+
+    return `
+      <div class="card">
+        <img src="${imageUrl}" alt="${t.name}">
+        <div class="card-info">
+          <h3>${t.name}</h3>
+          <p>${t.role}</p>
+        </div>
       </div>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 });
 </script>
 
