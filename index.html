@@ -64,12 +64,8 @@
       <div class="muted">Quality leads — premium properties</div>
     </div>
 
-    <div class="footer-links">
-      <a href="#">Facebook</a>
-      <a href="#">Instagram</a>
-      <a href="#">WhatsApp</a>
-      <a href="tel:+212600000000">Call</a>
-    </div>
+   <div class="footer-links" id="footerLinks"></div>
+
   </div>
 </footer>
 
@@ -77,6 +73,41 @@
 <div id="modalWrap" class="modal-wrap" style="display:none">
   <div id="modalContent" class="modal-content"></div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!window.supabaseClient) return;
+
+  const container = document.getElementById("footerLinks");
+  if (!container) return;
+
+  const { data, error } = await window.supabaseClient
+    .from("contact_info")
+    .select("type, value");
+
+  if (error || !data) {
+    console.error("Footer links error", error);
+    return;
+  }
+
+  const linkMap = {
+    phone: v => `tel:${v}`,
+    whatsapp: v => `https://wa.me/${v.replace("+", "")}`,
+    email: v => `mailto:${v}`,
+    instagram: v => v,
+    facebook: v => v,
+    tiktok: v => v
+  };
+
+  container.innerHTML = data
+    .filter(row => linkMap[row.type])
+    .map(row => `
+      <a href="${linkMap[row.type](row.value)}" target="_blank">
+        ${row.type.charAt(0).toUpperCase() + row.type.slice(1)}
+      </a>
+    `)
+    .join("");
+});
+</script>
 
 </body>
 </html>
