@@ -7,8 +7,11 @@
 
 <link rel="stylesheet" href="style.css">
 
+<!-- ✅ Load Supabase FIRST -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js" defer></script>
+
+<!-- ✅ Load your global client (NO defer) -->
+<script src="script.js"></script>
 </head>
 
 <body>
@@ -39,11 +42,19 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
-  const { data, error } = await window.supabase
-    .from("team_members")
-    .select("*");
+
+  if (!window.supabaseClient) {
+    console.error("❌ Supabase client not initialized");
+    return;
+  }
 
   const list = document.getElementById("teamList");
+  list.innerHTML = "<p>Loading team...</p>";
+
+  const { data, error } = await window.supabaseClient
+    .from("team_members")
+    .select("*")
+    .order("created_at", { ascending: true });
 
   if (error) {
     console.error(error);
@@ -51,9 +62,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+  if (!data || data.length === 0) {
+    list.innerHTML = "<p>No team members found.</p>";
+    return;
+  }
+
   list.innerHTML = data.map(t => `
     <div class="card">
-      <img src="${t.image_url || 'https://via.placeholder.com/300'}">
+      <img src="${t.image_url || 'https://via.placeholder.com/300'}" alt="${t.name}">
       <div class="card-info">
         <h3>${t.name}</h3>
         <p>${t.role}</p>
