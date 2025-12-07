@@ -38,7 +38,21 @@
 
 <section>
   <h2>Our Team</h2>
+
+  <!-- ✅ TEAM GRID -->
   <div class="grid" id="teamList"></div>
+
+  <!-- ✅ TEAM MESSAGE AT THE BOTTOM -->
+  <div class="team-message">
+    <h3>Together, We Build More Than Business</h3>
+    <p>
+      Behind every successful project is a team driven by passion, integrity,
+      and collaboration. At LeadGen Immobilier, we work side by side to create
+      meaningful connections, guide opportunities with precision, and turn
+      real estate ambitions into lasting success. Our strength lies in unity,
+      trust, and the shared belief that great results are built together.
+    </p>
+  </div>
 </section>
 
 <script>
@@ -77,7 +91,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     return `
       <div class="card">
-        <!-- ✅ IMPORTANT: team-avatar class -->
         <img src="${imageUrl}" alt="${t.name}" class="team-avatar">
         <div class="card-info">
           <h3>${t.name}</h3>
