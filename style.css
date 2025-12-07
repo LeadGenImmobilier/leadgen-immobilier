@@ -55,15 +55,16 @@ header{
 .logo{
   width:46px;
   height:46px;
-  border-radius:8px;
-  background:linear-gradient(135deg,var(--primary),#3aa0ff);
   display:flex;
   align-items:center;
-  justify-content:center;
-  color:white;
-  font-weight:700;
-  font-size:18px;
 }
+
+.logo img{
+  height:46px;
+  width:auto;
+}
+
+
 
 .brand-name{
   font-weight:800;
