@@ -77,7 +77,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     return `
       <div class="card">
-        <img src="${imageUrl}" alt="${t.name}">
+        <!-- ✅ IMPORTANT: team-avatar class -->
+        <img src="${imageUrl}" alt="${t.name}" class="team-avatar">
         <div class="card-info">
           <h3>${t.name}</h3>
           <p>${t.role}</p>
