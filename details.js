@@ -1,7 +1,7 @@
 // Initialize Supabase
 const supabaseClient = supabase.createClient(
   "https://drkjmtanzqmjgpltjqcg.supabase.co",
-  "YOUR_ANON_KEY_HERE"
+  "sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N"
 );
 
 // Get ID from URL
