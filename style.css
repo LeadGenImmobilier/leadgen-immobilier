@@ -531,12 +531,31 @@ section,
   border-radius: 8px;
 }
 /* PAGE HEADER */
+/* DETAILS PAGE HEADER (MATCHES ORIGINAL WEBSITE) */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  background: #ffffff;         /* ← back to white */
+  border-bottom: 1px solid #e6eefb;
+  color: var(--text-dark);     /* ← original color theme */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
 
 
 .back-btn {
-  color: #ffffff;
+  color: var(--primary);
   font-size: 1.2rem;
+  font-weight: 600;
   text-decoration: none;
+  transition: 0.25s;
+}
+
+.back-btn:hover {
+  color: var(--primary-dark);
 }
 
 /* HERO IMAGE */
