@@ -531,14 +531,7 @@ section,
   border-radius: 8px;
 }
 /* PAGE HEADER */
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 15px 25px;
-  background: #0c0c0c;
-  color: white;
-}
+
 
 .back-btn {
   color: #ffffff;
