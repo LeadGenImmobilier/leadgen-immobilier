@@ -1,42 +1,46 @@
 // Initialize Supabase
-const supabaseClient = window.supabase.createClient(
-  "YOUR_SUPABASE_URL",
-  "YOUR_SUPABASE_ANON_KEY"
+const supabaseClient = supabase.createClient(
+  "https://drkjmtanzqmjgpltjqcg.supabase.co",
+  "YOUR_ANON_KEY_HERE"
 );
 
-// Read ID from the URL
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+// Get ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const propertyId = urlParams.get("id");
+
+const container = document.getElementById("detailsContainer");
 
 async function loadProperty() {
-  const section = document.getElementById("detailsSection");
+  if (!propertyId) {
+    container.innerHTML = "<p>Property ID missing.</p>";
+    return;
+  }
 
   const { data, error } = await supabaseClient
     .from("properties")
     .select("*")
-    .eq("id", id)
+    .eq("id", propertyId)
     .single();
 
-  if (error || !data) {
-    section.innerHTML = "<h2>Property not found.</h2>";
+  if (error) {
+    container.innerHTML = "<p>Error loading property.</p>";
     return;
   }
 
-  section.innerHTML = `
-    <h2>${data.title}</h2>
+  container.innerHTML = `
+    <div class="details-page">
+      <img class="main-image" src="${data.image_url}" alt="">
 
-    <img src="${data.image_url}" class="hero-img">
+      <h2>${data.title}</h2>
+      <p><strong>Price:</strong> ${data.price} MAD</p>
+      <p>${data.description}</p>
 
-    <p><strong>Description:</strong> ${data.description}</p>
-    <p><strong>Price:</strong> ${data.price} MAD</p>
-    <p><strong>Location:</strong> ${data.location}</p>
-
-    <hr>
-
-    <h3>More Photos</h3>
-
-    <div class="gallery">
-      ${data.images?.map(img => `<img src="${img}" class="gallery-img">`).join("") || "No photos"}
+      <h3>Gallery</h3>
+      <div class="gallery">
+        ${(data.gallery || []).map(img => `
+          <img src="${img}" class="gallery-img">
+        `).join('')}
+      </div>
     </div>
   `;
 }
