@@ -9,11 +9,30 @@
 
 <body>
 
-<header>
-    <h2>Property Details</h2>
+<header class="nav">
+    <a href="properties.html" class="back-btn">← Back</a>
+    <h2 class="page-title">Property Details</h2>
 </header>
 
-<div id="detailsContainer">Loading...</div>
+<section class="property-hero">
+    <img id="mainImage" src="" alt="Property Image">
+</section>
+
+<section class="details-container">
+    <h1 id="title"></h1>
+    <p class="price" id="price"></p>
+    <p class="description" id="description"></p>
+
+    <div class="actions">
+        <a id="whatsappBtn" class="btn whatsapp">📩 WhatsApp</a>
+        <a id="callBtn" class="btn call">📞 Call</a>
+    </div>
+</section>
+
+<section class="gallery-section">
+    <h3>Property Gallery</h3>
+    <div id="gallery" class="gallery-grid"></div>
+</section>
 
 <script src="details.js"></script>
 
