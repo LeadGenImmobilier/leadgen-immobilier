@@ -1,48 +1,43 @@
-// Initialize Supabase
+// Init Supabase
 const supabaseClient = supabase.createClient(
-  "https://drkjmtanzqmjgpltjqcg.supabase.co",
-  "sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N"
+    "https://drkjmtanzqmjgpltjqcg.supabase.co",
+    "sb_publishable_N8SmY7U4KDsqCtuoMIQ2fA_D6rNjL4N"
 );
 
-// Get ID from URL
+// Extract ID from URL
 const urlParams = new URLSearchParams(window.location.search);
 const propertyId = urlParams.get("id");
 
-const container = document.getElementById("detailsContainer");
-
 async function loadProperty() {
-  if (!propertyId) {
-    container.innerHTML = "<p>Property ID missing.</p>";
-    return;
-  }
+    const { data, error } = await supabaseClient
+        .from("properties")
+        .select("*")
+        .eq("id", propertyId)
+        .single();
 
-  const { data, error } = await supabaseClient
-    .from("properties")
-    .select("*")
-    .eq("id", propertyId)
-    .single();
+    if (error || !data) {
+        document.body.innerHTML = "<h2>Error loading property.</h2>";
+        return;
+    }
 
-  if (error) {
-    container.innerHTML = "<p>Error loading property.</p>";
-    return;
-  }
+    // Fill page
+    document.getElementById("mainImage").src = data.image_url;
+    document.getElementById("title").textContent = data.title;
+    document.getElementById("price").textContent = `${data.price} MAD`;
+    document.getElementById("description").textContent = data.description;
 
-  container.innerHTML = `
-    <div class="details-page">
-      <img class="main-image" src="${data.image_url}" alt="">
+    // Create gallery
+    const gallery = document.getElementById("gallery");
+    if (data.gallery && data.gallery.length > 0) {
+        gallery.innerHTML = data.gallery
+            .map(img => `<img src="${img}" class="gallery-item">`)
+            .join("");
+    }
 
-      <h2>${data.title}</h2>
-      <p><strong>Price:</strong> ${data.price} MAD</p>
-      <p>${data.description}</p>
-
-      <h3>Gallery</h3>
-      <div class="gallery">
-        ${(data.gallery || []).map(img => `
-          <img src="${img}" class="gallery-img">
-        `).join('')}
-      </div>
-    </div>
-  `;
+    // WhatsApp + Call
+    const phone = data.phone || "+212600000000";
+    document.getElementById("whatsappBtn").href = `https://wa.me/${phone}`;
+    document.getElementById("callBtn").href = `tel:${phone}`;
 }
 
 loadProperty();
