@@ -75,16 +75,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    grid.innerHTML = data.map(p => `
-      <div class="card">
-        <img src="${p.image_url || 'https://via.placeholder.com/400x250'}" alt="">
-        <div class="card-info">
-          <h3>${p.title}</h3>
-          <p>${p.description || ''}</p>
-          <p><strong>Price:</strong> ${p.price ?? '—'} MAD</p>
-        </div>
-      </div>
-    `).join('');
+   grid.innerHTML = data.map(p => `
+  <a class="card" href="details.html?id=${p.id}">
+    <img src="${p.image_url || 'https://via.placeholder.com/400x250'}" alt="">
+    <div class="card-info">
+      <h3>${p.title}</h3>
+      <p>${p.description || ''}</p>
+      <p><strong>Price:</strong> ${p.price ?? '—'} MAD</p>
+    </div>
+  </a>
+`).join('');
+
 
     console.log('✅ Properties loaded');
 
